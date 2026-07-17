@@ -90,7 +90,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: var(--nav-h);
+  height: (--nav-h);
   transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
@@ -257,7 +257,7 @@ section {
 
 .section-header h2 em {
   font-style: italic;
-  color: var(--text-muted);
+   color: var(--accent);
 }
 
 #about .section-header h2 em { color: var(--accent); }
