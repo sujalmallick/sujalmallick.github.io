@@ -256,8 +256,8 @@ section {
 }
 
 .section-header h2 em {
-  font-style: italic;
-   color: var(--accent);
+  font-style: italic !important;
+  color: var(--accent) !important;
 }
 
 #about .section-header h2 em { color: var(--accent); }
