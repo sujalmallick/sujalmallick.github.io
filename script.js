@@ -239,6 +239,82 @@ document.addEventListener('keydown', function (e) {
   });
 })();
 
+/* ── 10b. PROJECTS SECTION — ARCHITECTURE PIPELINE DROPDOWN (MOBILE) ─── */
+(function initPipelineDropdowns() {
+  function setup() {
+    var buttons = document.querySelectorAll('.pipeline-dropdown-btn');
+    if (!buttons.length) return;
+
+    buttons.forEach(function (btn) {
+      var controlsId = btn.getAttribute('aria-controls');
+      var content = controlsId ? document.getElementById(controlsId) : null;
+      if (!content) return;
+
+      var textSpan = btn.querySelector('.pipeline-toggle-text');
+
+      function toggle(open) {
+        var isCurrentlyOpen = btn.getAttribute('aria-expanded') === 'true';
+        var shouldOpen = open !== undefined ? open : !isCurrentlyOpen;
+
+        btn.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+        if (textSpan) {
+          textSpan.textContent = shouldOpen ? 'Hide' : 'View';
+        }
+
+        if (shouldOpen) {
+          content.classList.add('is-open');
+          content.removeAttribute('hidden');
+        } else {
+          content.classList.remove('is-open');
+          if (window.innerWidth <= 768) {
+            content.setAttribute('hidden', 'until-found');
+          } else {
+            content.removeAttribute('hidden');
+          }
+        }
+      }
+
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        toggle();
+      });
+
+      // Browser "Find in Page" / beforematch integration (Modern Web Guidance)
+      content.addEventListener('beforematch', function () {
+        toggle(true);
+      });
+    });
+
+    // Synchronize on resize: if expanding back to desktop, ensure content is unhidden
+    function syncOnResize() {
+      var isMobile = window.innerWidth <= 768;
+      buttons.forEach(function (btn) {
+        var controlsId = btn.getAttribute('aria-controls');
+        var content = controlsId ? document.getElementById(controlsId) : null;
+        if (!content) return;
+
+        if (!isMobile) {
+          content.removeAttribute('hidden');
+        } else {
+          var isOpen = btn.getAttribute('aria-expanded') === 'true';
+          if (!isOpen) {
+            content.setAttribute('hidden', 'until-found');
+          }
+        }
+      });
+    }
+
+    syncOnResize();
+    window.addEventListener('resize', syncOnResize, { passive: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
+})();
+
 /* ═══════════════════════════════════════════════════════════════════════════
    LIVING RETRO PIXEL-ART FOOTER WORLD
    A living, spacious 8-bit/16-bit retro developer scene:
@@ -1005,9 +1081,9 @@ document.addEventListener('keydown', function (e) {
     });
   }
 
-  setupTowerAction(citadel, 'is-pulsing', '⚡ OVERCHARGE +250MW', 'ΩN CORE ACTIVE', 1800);
-  setupTowerAction(factory, 'is-venting', '💨 STEAM PURGED', 'SMELTER RUNNING', 1800);
-  setupTowerAction(refinery, 'is-cycling', '⚠️ WINCH CYCLED', 'CARGO DOCKED', 1800);
+  setupTowerAction(citadel, 'is-pulsing', 'OVERCHARGE +250MW', 'ΩN CORE ACTIVE', 1800);
+  setupTowerAction(factory, 'is-venting', 'STEAM PURGED', 'SMELTER RUNNING', 1800);
+  setupTowerAction(refinery, 'is-cycling', 'WINCH CYCLED', 'CARGO DOCKED', 1800);
 })();
 
 
@@ -1425,6 +1501,10 @@ document.addEventListener('keydown', function (e) {
 
     var frame = 0;
     function render() {
+      if (document.body.classList.contains('codex-open')) {
+        requestAnimationFrame(render);
+        return;
+      }
       ctx.clearRect(0, 0, width, height);
       frame++;
 
@@ -1735,20 +1815,20 @@ document.addEventListener('keydown', function (e) {
     var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // 12 Frames: Frame 0..11, each frame width is 66px
-    var FRAME_W = 66;
+    var FRAME_W = 56;
     function setFrame(idx) {
       sprite.style.backgroundPosition = (-idx * FRAME_W) + 'px 0px';
     }
 
     var STATUS_MESSAGES = [
       'git commit -m "feat: ai-pipeline"',
-      'CUDA kernel deployed ⚡',
+      'CUDA kernel deployed',
       'TIET / Computer Eng \'27',
       'npm run dev -- --host',
-      '0 errors, 0 warnings ✓',
+      '0 errors, 0 warnings',
       'training transformer model...',
-      'multi-agent graph online 🚀',
-      'all tests passing ✓',
+      'multi-agent graph online',
+      'all tests passing',
       'inference latency 3.8ms'
     ];
 
@@ -3109,109 +3189,83 @@ document.addEventListener('keydown', function (e) {
 })();
 
 /* ════════════════════════════════════════════════════════════════════
-   DEEP-SPACE NEBULA 60 FPS CONTINUOUS PLASMA LIGHTNING CROSS-FADER
+   DEEP-SPACE NEBULA GRAVITATIONAL INERTIA & CURSOR REACTIVITY ENGINE
+   - Smooth damped cursor parallax simulating zero-g fluid gas mass
+   - Automatic pause when out of viewport for zero CPU consumption
+   - Respects prefers-reduced-motion
    ════════════════════════════════════════════════════════════════════ */
-(function initNebulaLightningCrossfade() {
+(function initNebulaCosmicPhysics() {
   function start() {
-    var canvas = document.getElementById('space-nebula-canvas');
-    if (!canvas) return;
-    var ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    ctx.imageSmoothingEnabled = false;
+    var nebulaWrap = document.getElementById('space-nebula-wrap');
+    var aboutSection = document.getElementById('about');
+    if (!nebulaWrap || !aboutSection) return;
 
     var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     var prefersReduced = motionQuery.matches;
 
-    var FRAME_W = 264;
-    var FRAME_H = 164;
-    var TOTAL_FRAMES = 12;
-    var CYCLE_DURATION = 18000; // 18s calm cosmic cycle
-    var DORMANT_PORTION = 0.58; // 58% dormant serene drift (~10.4s), 42% continuous fluid discharge (~7.6s)
-
-    var sheet = new Image();
-    sheet.src = './assets/sprites/nebula-lightning-12frame-sheet.png';
-
+    var targetX = 0;
+    var targetY = 0;
+    var currentX = 0;
+    var currentY = 0;
     var isVisible = true;
-    var startTime = null;
+    var isHovered = false;
     var rafId = null;
 
-    function getBlendState(tNorm) {
-      if (tNorm < DORMANT_PORTION) {
-        return { fA: 0, fB: 0, blend: 0 };
+    function onMouseMove(e) {
+      if (prefersReduced || !isVisible) return;
+      var rect = aboutSection.getBoundingClientRect();
+      var relX = (e.clientX - rect.left) / rect.width - 0.5;
+      var relY = (e.clientY - rect.top) / rect.height - 0.5;
+
+      // Damped target displacement (+/-18px horizontal, +/-14px vertical)
+      targetX = relX * 14;
+      targetY = relY * 10;
+      isHovered = true;
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(tick);
       }
-      var activeProgress = (tNorm - DORMANT_PORTION) / (1.0 - DORMANT_PORTION);
-      var totalSteps = 12;
-      var stepPos = activeProgress * totalSteps;
-      var stepIdx = Math.floor(stepPos);
-      var rawBlend = stepPos - stepIdx;
-
-      // Smooth cosine easing on blend to eliminate any micro-inflection
-      var smoothBlend = 0.5 - 0.5 * Math.cos(rawBlend * Math.PI);
-
-      var fA = stepIdx % TOTAL_FRAMES;
-      var fB = (stepIdx + 1) % TOTAL_FRAMES;
-      return { fA: fA, fB: fB, blend: smoothBlend };
     }
 
-    function drawFrame(fA, fB, blend) {
-      ctx.clearRect(0, 0, FRAME_W, FRAME_H);
-      ctx.globalAlpha = 1.0 - blend;
-      ctx.drawImage(sheet, fA * FRAME_W, 0, FRAME_W, FRAME_H, 0, 0, FRAME_W, FRAME_H);
-
-      if (blend > 0.001) {
-        ctx.globalAlpha = blend;
-        ctx.drawImage(sheet, fB * FRAME_W, 0, FRAME_W, FRAME_H, 0, 0, FRAME_W, FRAME_H);
-      }
-      ctx.globalAlpha = 1.0;
+    function onMouseLeave() {
+      targetX = 0;
+      targetY = 0;
+      isHovered = false;
     }
 
-    function render(now) {
-      if (document.hidden || !isVisible) {
+    function tick() {
+      if (!isVisible || prefersReduced) {
         rafId = null;
         return;
       }
 
-      if (prefersReduced) {
-        drawFrame(0, 0, 0);
-        rafId = null;
-        return;
-      }
+      // Smooth lerp damping (0.045 factor gives celestial weightless inertia)
+      currentX += (targetX - currentX) * 0.025;
+      currentY += (targetY - currentY) * 0.025;
 
-      if (!startTime) startTime = now;
-      var elapsed = (now - startTime) % CYCLE_DURATION;
-      var tNorm = elapsed / CYCLE_DURATION;
+      nebulaWrap.style.transform = 'translate3d(' + currentX.toFixed(2) + 'px, ' + currentY.toFixed(2) + 'px, 0)';
 
-      var state = getBlendState(tNorm);
-      drawFrame(state.fA, state.fB, state.blend);
-
-      rafId = requestAnimationFrame(render);
-    }
-
-    sheet.onload = function () {
-      if (prefersReduced) {
-        drawFrame(0, 0, 0);
-        return;
-      }
-      rafId = requestAnimationFrame(render);
-    };
-
-    if (sheet.complete && sheet.naturalWidth > 0) {
-      if (prefersReduced) {
-        drawFrame(0, 0, 0);
+      // Continue animating while moving or relaxing back to rest
+      var distSq = (targetX - currentX) * (targetX - currentX) + (targetY - currentY) * (targetY - currentY);
+      if (distSq > 0.01 || isHovered) {
+        rafId = requestAnimationFrame(tick);
       } else {
-        rafId = requestAnimationFrame(render);
+        rafId = null;
+        if (!isHovered && Math.abs(currentX) < 0.05 && Math.abs(currentY) < 0.05) {
+          nebulaWrap.style.transform = '';
+        }
       }
     }
+
+    aboutSection.addEventListener('mousemove', onMouseMove, { passive: true });
+    aboutSection.addEventListener('mouseleave', onMouseLeave, { passive: true });
 
     motionQuery.addEventListener('change', function (e) {
       prefersReduced = e.matches;
       if (prefersReduced) {
         if (rafId) cancelAnimationFrame(rafId);
         rafId = null;
-        drawFrame(0, 0, 0);
-      } else if (isVisible && !rafId) {
-        startTime = null;
-        rafId = requestAnimationFrame(render);
+        nebulaWrap.style.transform = '';
       }
     });
 
@@ -3219,12 +3273,13 @@ document.addEventListener('keydown', function (e) {
       var obs = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           isVisible = entry.isIntersecting;
-          if (isVisible && !rafId && !prefersReduced && sheet.complete) {
-            rafId = requestAnimationFrame(render);
+          if (!isVisible && rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
           }
         });
-      }, { threshold: 0.05, rootMargin: '120px 0px 120px 0px' });
-      obs.observe(canvas);
+      }, { threshold: 0.05, rootMargin: '100px 0px 100px 0px' });
+      obs.observe(aboutSection);
     }
   }
 
@@ -3236,3 +3291,145 @@ document.addEventListener('keydown', function (e) {
 })();
 
 
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LUNAR ARCHIVE CODEX (SPACE ODYSSEY & ELEMENT LORE MODAL)
+   - Interactive Moon trigger in Contacts section
+   - Native HTML5 <dialog> with smooth entrance & backdrop blur
+   - Smooth elevation tier quick-jump sub-navigation
+   - Esc, backdrop click, and button dismissal with focus return
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function initLunarArchiveCodex() {
+  function init() {
+    var moonBtn = document.getElementById('contacts-moon-btn');
+    var dialog = document.getElementById('lunar-codex-dialog');
+    if (!dialog) return;
+
+    var closeBtn = document.getElementById('codex-close-btn');
+    var dialogBody = document.getElementById('codex-body');
+    var pills = dialog.querySelectorAll('.codex-tab');
+    var tiers = dialog.querySelectorAll('.codex-tier');
+
+    function openCodex() {
+      if (typeof dialog.showModal === 'function') {
+        dialog.showModal();
+        document.body.classList.add('codex-open');
+        if (dialogBody) {
+          dialogBody.scrollTop = 0;
+        }
+      }
+    }
+
+    function closeCodex() {
+      if (dialog.open) {
+        dialog.close();
+        document.body.classList.remove('codex-open');
+        if (moonBtn && typeof moonBtn.focus === 'function') {
+          moonBtn.focus();
+        }
+      }
+    }
+
+    if (moonBtn) {
+      moonBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        openCodex();
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeCodex);
+    }
+
+    // Dismiss when clicking directly on backdrop
+    dialog.addEventListener('click', function (e) {
+      var rect = dialog.getBoundingClientRect();
+      var isInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.bottom &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.right
+      );
+      if (!isInDialog) {
+        closeCodex();
+      }
+    });
+
+    dialog.addEventListener('close', function () {
+      document.body.classList.remove('codex-open');
+    });
+
+    dialog.addEventListener('cancel', function () {
+      document.body.classList.remove('codex-open');
+    });
+
+        // Collapsible Codex Cards: click or keyboard (Enter/Space) toggles story expansion
+    var cards = dialog.querySelectorAll('.codex-card');
+    cards.forEach(function (card) {
+      function toggleCard() {
+        var isExpanded = card.classList.toggle('is-expanded');
+        card.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+        var hint = card.querySelector('.codex-hint-text');
+        if (hint) {
+          hint.textContent = isExpanded ? 'Hide story' : 'Read story';
+        }
+      }
+
+      card.addEventListener('click', toggleCard);
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleCard();
+        }
+      });
+    });
+
+    // Quick-jump navigation pills
+    pills.forEach(function (pill) {
+      pill.addEventListener('click', function (e) {
+        e.preventDefault();
+        var targetId = pill.getAttribute('href');
+        if (!targetId || !targetId.startsWith('#')) return;
+        var targetEl = dialog.querySelector(targetId);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          pills.forEach(function (p) { p.classList.remove('active'); });
+          pill.classList.add('active');
+        }
+      });
+    });
+
+    // Update active nav pill as user scrolls through tiers
+    if ('IntersectionObserver' in window && dialogBody && tiers.length > 0) {
+      var tierObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var id = '#' + entry.target.id;
+            pills.forEach(function (pill) {
+              if (pill.getAttribute('href') === id) {
+                pill.classList.add('active');
+              } else {
+                pill.classList.remove('active');
+              }
+            });
+          }
+        });
+      }, {
+        root: dialogBody,
+        threshold: 0.25,
+        rootMargin: '-10% 0px -40% 0px'
+      });
+
+      tiers.forEach(function (tier) {
+        tierObserver.observe(tier);
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

@@ -14,8 +14,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@300;400;500;600&display=swap">
-  <link rel="stylesheet" href="style.css?v=43">
-  <link rel="stylesheet" href="mediaqueries.css?v=34">
+  <link rel="stylesheet" href="style.css?v=48">
+  <link rel="stylesheet" href="mediaqueries.css?v=35">
   <link rel="stylesheet" href="wasteland.css?v=9">
   <link rel="icon" type="image/png" href="./assets/favicon.png?v=6">
 </head>
@@ -158,11 +158,13 @@
 
   <!-- ═══════════════════════════ ABOUT ═════════════════════════════════ -->
   <section id="about" class="reveal-divider" aria-label="About">
-    <!-- Distant Deep-Space Volumetric Nebula Cloud with Cosmic Plasma Lightning -->
+    <!-- Distant Deep-Space Volumetric Nebula Cloud (Atmospheric Cosmic Depth) -->
     <div class="space-nebula-wrap" id="space-nebula-wrap" aria-hidden="true">
-      <div class="space-nebula-drift">
-        <canvas class="space-nebula-canvas" id="space-nebula-canvas" width="264" height="164" role="img" aria-label="Distant deep-space emission nebula with periodic cosmic plasma lightning discharges"></canvas>
+      <div class="space-nebula-backdrop-glow"></div>
+      <div class="space-nebula-drift" id="space-nebula-drift">
+        <img src="./assets/sprites/deep-space-nebula-cloud.png" alt="" class="space-nebula-img" id="space-nebula-img" width="1376" height="768" loading="lazy">
       </div>
+    </div>
     </div>
     <div class="section-header reveal">
       <div class="section-header-text">
@@ -423,19 +425,32 @@
         </div>
         <div class="project-featured-aside">
           <div class="architecture-callout">
-            <span class="arch-label">Pipeline Architecture &middot; 8 LLM Agents</span>
-            <div class="arch-flow">
-              <span class="arch-node">module_agent</span>
-              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-              <span class="arch-node">checklist_agent</span>
-              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-              <span class="arch-node">test_case_agent</span>
-              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-              <span class="arch-node">e2e_agent</span>
-              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-              <span class="arch-node">coverage_loop</span>
+            <button type="button" class="pipeline-dropdown-btn" aria-expanded="false" aria-controls="pipeline-flow-1">
+              <span class="pipeline-btn-left">
+                <span class="pipeline-btn-title">Pipeline Architecture</span>
+              </span>
+              <span class="pipeline-btn-toggle">
+                <span class="pipeline-toggle-text">View</span>
+                <svg class="pipeline-toggle-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </span>
+            </button>
+            <div class="pipeline-collapse-content" id="pipeline-flow-1">
+              <span class="arch-label">Pipeline Architecture &middot; 5 Specialized Agents</span>
+              <div class="arch-flow">
+                <span class="arch-node">module_agent</span>
+                <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+                <span class="arch-node">checklist_agent</span>
+                <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+                <span class="arch-node">planning_agent</span>
+                <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+                <span class="arch-node">test_case_agent</span>
+                <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+                <span class="arch-node">issue_agent</span>
+              </div>
+              <span class="arch-sub">LangGraph orchestration &middot; Azure (App Service, Container Apps) &middot; PostgreSQL &middot; LiteLLM (BYOK) &middot; GitHub Actions CI/CD</span>
             </div>
-            <span class="arch-sub">LangGraph orchestration &middot; Azure (App Service, Container Apps) &middot; PostgreSQL &middot; LiteLLM (BYOK) &middot; GitHub Actions CI/CD</span>
           </div>
         </div>
       </div>
@@ -461,19 +476,32 @@
         </div>
         <p class="project-description">Cloud-deployed AI accident-detection platform. Real-time video ingestion with YOLO vehicle detection and a secondary CNN collision classifier &mdash; served via a Dockerized FastAPI backend on AWS EC2, with a React / TypeScript frontend distributed through AWS S3 and CloudFront CDN.</p>
         <div class="architecture-callout">
-          <span class="arch-label">Inference &amp; Cloud Pipeline</span>
-          <div class="arch-flow">
-            <span class="arch-node">video_stream</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">yolo_detector</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">cnn_classifier</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">fastapi_ec2</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">s3_cloudfront</span>
+          <button type="button" class="pipeline-dropdown-btn" aria-expanded="false" aria-controls="pipeline-flow-2">
+            <span class="pipeline-btn-left">
+              <span class="pipeline-btn-title">Inference &amp; Cloud Pipeline</span>
+            </span>
+            <span class="pipeline-btn-toggle">
+              <span class="pipeline-toggle-text">View</span>
+              <svg class="pipeline-toggle-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div class="pipeline-collapse-content" id="pipeline-flow-2">
+            <span class="arch-label">Inference &amp; Cloud Pipeline</span>
+            <div class="arch-flow">
+              <span class="arch-node">video_stream</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">yolo_detector</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">cnn_classifier</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">fastapi_ec2</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">s3_cloudfront</span>
+            </div>
+            <span class="arch-sub">Real-time inference &middot; Dockerized FastAPI on AWS EC2 &middot; S3 &amp; CloudFront edge delivery</span>
           </div>
-          <span class="arch-sub">Real-time inference &middot; Dockerized FastAPI on AWS EC2 &middot; S3 &amp; CloudFront edge delivery</span>
         </div>
         <div class="project-stack">
           <span class="stack-item">React / Vite</span>
@@ -503,17 +531,30 @@
         </div>
         <p class="project-description">Extended a GPU-accelerated open-source CUDA boids simulator. Added spatial-hash neighbour searching to eliminate \(O(N^2)\) particle checks, zero-copy CUDA&ndash;OpenGL interop for direct frame-buffer rendering, and an interactive Dear ImGui control panel &mdash; scaling to 100k+ boids at 60 FPS.</p>
         <div class="architecture-callout">
-          <span class="arch-label">GPU Acceleration Pipeline &middot; 100k+ Agents</span>
-          <div class="arch-flow">
-            <span class="arch-node">agent_state_vbo</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">spatial_hash_sort</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">cuda_steering</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">opengl_interop</span>
+          <button type="button" class="pipeline-dropdown-btn" aria-expanded="false" aria-controls="pipeline-flow-3">
+            <span class="pipeline-btn-left">
+              <span class="pipeline-btn-title">GPU Acceleration Pipeline &middot; 100k+ Agents</span>
+            </span>
+            <span class="pipeline-btn-toggle">
+              <span class="pipeline-toggle-text">View</span>
+              <svg class="pipeline-toggle-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div class="pipeline-collapse-content" id="pipeline-flow-3">
+            <span class="arch-label">GPU Acceleration Pipeline &middot; 100k+ Agents</span>
+            <div class="arch-flow">
+              <span class="arch-node">agent_state_vbo</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">spatial_hash_sort</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">cuda_steering</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">opengl_interop</span>
+            </div>
+            <span class="arch-sub">Zero-copy CUDA&ndash;OpenGL interop &middot; Spatial-hash grid acceleration &middot; Dear ImGui telemetry</span>
           </div>
-          <span class="arch-sub">Zero-copy CUDA&ndash;OpenGL interop &middot; Spatial-hash grid acceleration &middot; Dear ImGui telemetry</span>
         </div>
         <div class="project-stack">
           <span class="stack-item">CUDA / C++</span>
@@ -543,19 +584,32 @@
         </div>
         <p class="project-description">&ldquo;Evidence before payment&rdquo;: an AI agent team that investigates invoice anomalies, with an explainable code-based risk score and human approval before anything is paid. Built for small businesses, India first.</p>
         <div class="architecture-callout">
-          <span class="arch-label">Multi-Agent Verification Pipeline</span>
-          <div class="arch-flow">
-            <span class="arch-node">invoice_ingest</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">ocr_extractor</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">anomaly_agent</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">risk_scorer</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">human_approval</span>
+          <button type="button" class="pipeline-dropdown-btn" aria-expanded="false" aria-controls="pipeline-flow-4">
+            <span class="pipeline-btn-left">
+              <span class="pipeline-btn-title">Multi-Agent Verification Pipeline</span>
+            </span>
+            <span class="pipeline-btn-toggle">
+              <span class="pipeline-toggle-text">View</span>
+              <svg class="pipeline-toggle-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div class="pipeline-collapse-content" id="pipeline-flow-4">
+            <span class="arch-label">Multi-Agent Verification Pipeline</span>
+            <div class="arch-flow">
+              <span class="arch-node">invoice_ingest</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">ocr_extractor</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">anomaly_agent</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">risk_scorer</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">human_approval</span>
+            </div>
+            <span class="arch-sub">LangGraph workflow &middot; Deterministic risk scoring &middot; SQLAlchemy audit trail &middot; Human-in-the-loop gate</span>
           </div>
-          <span class="arch-sub">LangGraph workflow &middot; Deterministic risk scoring &middot; SQLAlchemy audit trail &middot; Human-in-the-loop gate</span>
         </div>
         <div class="project-stack">
           <span class="stack-item">FastAPI / SQLAlchemy</span>
@@ -594,17 +648,30 @@
         </div>
         <p class="project-description">A cozy Kotlin Multiplatform cross-platform app creating intimate ambient spaces, interactive real-time visual touch scenes, and relationship-focused interactions in a lightweight, battery-efficient mobile canvas. Live at <a href="https://www.tinyus.online/" target="_blank" rel="noopener noreferrer" class="company-link">tinyus.online &nearr;</a></p>
         <div class="architecture-callout">
-          <span class="arch-label">Cross-Platform Reactive Engine</span>
-          <div class="arch-flow">
-            <span class="arch-node">touch_gestures</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">spring_physics</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">websocket_sync</span>
-            <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
-            <span class="arch-node">ambient_canvas</span>
+          <button type="button" class="pipeline-dropdown-btn" aria-expanded="false" aria-controls="pipeline-flow-5">
+            <span class="pipeline-btn-left">
+              <span class="pipeline-btn-title">Cross-Platform Reactive Engine</span>
+            </span>
+            <span class="pipeline-btn-toggle">
+              <span class="pipeline-toggle-text">View</span>
+              <svg class="pipeline-toggle-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div class="pipeline-collapse-content" id="pipeline-flow-5">
+            <span class="arch-label">Cross-Platform Reactive Engine</span>
+            <div class="arch-flow">
+              <span class="arch-node">touch_gestures</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">spring_physics</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">websocket_sync</span>
+              <span class="arch-arrow" aria-hidden="true">&#x2192;</span>
+              <span class="arch-node">ambient_canvas</span>
+            </div>
+            <span class="arch-sub">Kotlin Multiplatform &middot; Compose Multiplatform &middot; Reactive state synchronization &middot; Spring physics</span>
           </div>
-          <span class="arch-sub">Kotlin Multiplatform &middot; Compose Multiplatform &middot; Reactive state synchronization &middot; Spring physics</span>
         </div>
         <div class="project-stack">
           <span class="stack-item">Kotlin</span>
@@ -853,8 +920,11 @@
   <!-- ═══════════════════════════ CONTACTS ══════════════════════════════ -->
   <section id="contacts" class="reveal-divider" aria-label="Contact">
     <!-- Distant Large Pixel-Art Moon (Partially Cropped at Right Viewport Edge) -->
-    <div class="contacts-moon-wrap" id="contacts-moon-wrap" aria-hidden="true">
-      <img src="./assets/pixel-moon.png" alt="" class="contacts-pixel-moon" width="180" height="180">
+    <div class="contacts-moon-wrap" id="contacts-moon-wrap">
+      <button type="button" class="contacts-moon-btn" id="contacts-moon-btn" aria-haspopup="dialog" aria-controls="lunar-codex-dialog" aria-label="Open Space Odyssey and Element Lore Codex" title="Click moon to open Codex">
+        <span class="moon-scanner-reticle" aria-hidden="true"></span>
+        <img src="./assets/pixel-moon.png" alt="Ancient Pixel Moon" class="contacts-pixel-moon" width="180" height="180">
+      </button>
     </div>
 
     <div class="section-header reveal">
@@ -1025,12 +1095,822 @@
     </div>
   </footer>
 
-  <!-- Pixelated Cosmic Starfield Background Canvas -->
+    <!-- ═══════════════════════════ LUNAR ARCHIVE CODEX MODAL ══════════════════════════════ -->
+  <dialog id="lunar-codex-dialog" class="lunar-codex-dialog" aria-labelledby="codex-title" aria-describedby="codex-desc">
+    <!-- Dialog Header -->
+    <header class="codex-header">
+      <div class="codex-header-meta">
+        <h2 id="codex-title" class="codex-title">Space Odyssey &amp; Element Lore</h2>
+        <p id="codex-desc" class="codex-desc">A vertical journey from Earth's robot wasteland to the deep cosmic black hole. Click any card to read its story.</p>
+      </div>
+      <button type="button" class="codex-close-btn" id="codex-close-btn" aria-label="Close Archive Codex" title="Close (Esc)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </header>
+
+    <!-- Quick Jump Tabs -->
+    <nav class="codex-nav" aria-label="Codex Elevation Tiers">
+      <span class="codex-nav-label">JUMP TO:</span>
+      <div class="codex-nav-tabs">
+        <a href="#codex-tier-1" class="codex-tab">01 Surface</a>
+        <a href="#codex-tier-2" class="codex-tab">02 Gate</a>
+        <a href="#codex-tier-3" class="codex-tab">03 Low Orbit</a>
+        <a href="#codex-tier-4" class="codex-tab">04 Mid Orbit</a>
+        <a href="#codex-tier-5" class="codex-tab">05 High Orbit</a>
+        <a href="#codex-tier-6" class="codex-tab">06 Singularity</a>
+      </div>
+    </nav>
+
+    <!-- Scrollable Dialog Body -->
+    <div class="codex-body" id="codex-body">
+      <!-- Mission Overview -->
+      <section class="codex-prologue">
+        <div class="codex-prologue-kicker">MISSION BRIEFING &middot; VERTICAL EXPEDITION</div>
+        <p class="codex-prologue-text">
+          This portfolio is built as a vertical space adventure. At the bottom, combat cyborgs control Earth after rogue AI took over the planet. As you travel upward, broken space stations and lost astronaut relics show humanity's escape into space. High above in orbit, the last living human developer sits in a spacesuit, coding software on his laptop under deep space nebulae, heading toward the giant black hole at the top.
+        </p>
+      </section>
+
+      <!-- Tier 1: Earth's Surface -->
+      <section class="codex-tier" id="codex-tier-1">
+        <div class="codex-tier-header">
+          <div class="codex-tier-meta">
+            <span class="codex-tier-num">01</span>
+            <span class="codex-tier-dot">&middot;</span>
+            <span class="codex-tier-loc">Surface &mdash; Elevation 0 km</span>
+          </div>
+          <h3 class="codex-tier-title">Earth's Surface: The Machine Wasteland</h3>
+          <p class="codex-tier-lore">
+            Rogue artificial intelligence conquered Earth. Autonomous machines and combat cyborgs patrol the dusty ground, while smoking factories build machine armies.
+          </p>
+        </div>
+        <div class="codex-grid">
+          <!-- Card 1 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Combat Cyborg Gunner, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/wasteland/cyborg-shooter-0.png" alt="Combat Cyborg Gunner" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Combat Cyborg Gunner</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Ruler of Earth</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">Rogue AI took over planet Earth, and this heavy combat cyborg is now the machine ruler of the wasteland. He patrols the ruins with a red visor and plasma rifle, making sure no humans can return to the surface.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Sprite &middot;</span>
+                <span>12-frame animated ground guard with boundary patrol kinematics.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Ground Patrol Scout Robot, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/pixel-service-droid.png" alt="Ground Patrol Scout Robot" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Ground Patrol Scout Robot</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Scout Rover</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A small scout robot built by the machines to roll across the dusty ground. It scans the rocks and turns around when it hits walls, always searching for leftover human technology.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Sprite &middot;</span>
+                <span>Autonomous ground rover with boundary-bounce reflection.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Central Citadel Monolith Tower, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/wasteland/citadel-tower.png" alt="Central Citadel Monolith Tower" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Central Citadel Monolith Tower</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">AI Command Tower</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">The main command tower built by the machine empire. It stands tall in the center of the wasteland, sending out green radar rings to track everything moving across the scorched ground.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Monolith &middot;</span>
+                <span>Clickable command tower that broadcasts acoustic radar rings across the dust.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Left Industrial Factory and Smelter, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/wasteland/factory-left.png" alt="Left Industrial Factory and Smelter" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Left Industrial Factory &amp; Smelter</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Machine Factory</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A massive robot-run factory with two giant smokestacks. It works day and night without human workers, melting metal and minerals to build new machine soldiers.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Facility &middot;</span>
+                <span>Industrial forge with animated multi-layer drifting smoke plumes.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Right Cargo Refinery Platform, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/wasteland/refinery-right.png" alt="Right Cargo Refinery Platform" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Right Cargo Refinery Platform</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Cargo Dock</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A high platform where robot ships load fuel and cargo crates. Its amber warning lights blink constantly so incoming transport ships do not crash in the thick smog.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Facility &middot;</span>
+                <span>High-altitude cargo dock with pulsing amber warning lights.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Industrial Navigation Beacon, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/sprites/industrial-navigation-beacon.png" alt="Industrial Navigation Beacon" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Industrial Navigation Beacon</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Warning Tower</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A tall metal warning tower that flashes bright red lights into the cloudy sky. It warns flying scout ships to stay clear of the high-voltage electrical wires below.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Beacon &middot;</span>
+                <span>Tall navigation mast with high-frequency red strobe lighting.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Abandoned Droid Head, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/abandoned-droid-head.png" alt="Abandoned Droid Head" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Abandoned Droid Head</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Broken Relic</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">The broken skull of an older robot, half-buried in the sand dunes. Its single blue robotic eye still flickers with electricity when touched, trying to remember its old orders.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Relic &middot;</span>
+                <span>Half-buried cyber skull with interactive optic eye sparks.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 8 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Derelict Wasteland Vehicles, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/wasteland/derelict-car.png" alt="Derelict Wasteland Vehicles" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Derelict Wasteland Vehicles</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Abandoned Cars</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">Rusted buggies and cars left behind in the sand dunes. Long ago, people tried to drive them across the desert to reach the rocket launch pads before the machines took over.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Scenery &middot;</span>
+                <span>Weathered pixel vehicles scattered across the machine wasteland.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 9 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Weathered Utility Grid, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/wasteland/utility-pole.png" alt="Weathered Utility Grid" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Weathered Utility Grid</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Power Lines</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">Old wooden telephone poles and hanging power lines. They carried electricity to human cities before the war, and now stand silent against the jagged mountain hills.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Infra &middot;</span>
+                <span>Wooden utility poles with hanging high-voltage wires.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Tier 2: Lower Atmosphere & Orbital Gate -->
+      <section class="codex-tier" id="codex-tier-2">
+        <div class="codex-tier-header">
+          <div class="codex-tier-meta">
+            <span class="codex-tier-num">02</span>
+            <span class="codex-tier-dot">&middot;</span>
+            <span class="codex-tier-loc">Contact Section &mdash; Elevation 100 km</span>
+          </div>
+          <h3 class="codex-tier-title">Lower Atmosphere: The Orbital Gateway</h3>
+          <p class="codex-tier-lore">
+            The border where Earth air ends and space begins. Ancient lunar rocks and open-source pioneers mark the safe crossing into orbit.
+          </p>
+        </div>
+        <div class="codex-grid">
+          <!-- Card 10 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="The Ancient Lunar Rock, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/pixel-moon.png" alt="The Ancient Lunar Rock" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">The Ancient Lunar Rock</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Gateway Moon</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A giant gray moon floating silently in the black sky. It watched Earth fall to the machines, and now it acts as the gateway to this archive, keeping track of every step of the journey into space.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Gateway &middot;</span>
+                <span>Clickable moon that unlocks this Space Odyssey codex.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 11 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Roaming Linux Tux Penguin, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/pixel-tux-idle.png" alt="Roaming Linux Tux Penguin" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Roaming Linux Tux Penguin</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Linux Explorer</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">Tux the friendly penguin walks calmly across the contact bar. He represents the free spirit of open-source software, walking peacefully across borders without fear of the machines.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Mascot &middot;</span>
+                <span>Autonomous walking mascot with flip-turn physics.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Tier 3: Low Orbit -->
+      <section class="codex-tier" id="codex-tier-3">
+        <div class="codex-tier-header">
+          <div class="codex-tier-meta">
+            <span class="codex-tier-num">03</span>
+            <span class="codex-tier-dot">&middot;</span>
+            <span class="codex-tier-loc">Certificates &amp; Hackathons &mdash; Elevation 400 km</span>
+          </div>
+          <h3 class="codex-tier-title">Low Orbit: AI Helpers &amp; Fast Rockets</h3>
+          <p class="codex-tier-lore">
+            Swift spacecraft fly past rapid hackathon arenas, while friendly AI companions guide learning across cloud systems.
+          </p>
+        </div>
+        <div class="codex-grid">
+          <!-- Card 12 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Gemini Cosmic Companion, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/mascot-gemini.png" alt="Gemini Cosmic Companion" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Gemini Cosmic Companion</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">AI Guide</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A cheerful little space astronaut floating in zero gravity. Holding a magical rainbow star wand, this friendly AI helper guides human learning through cloud computing and intelligent software.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Companion &middot;</span>
+                <span>Zero-gravity floating astronaut with a sparkling star wand.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 13 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Deep-Space Pixel Starfighter, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/pixel-starfighter.png" alt="Deep-Space Pixel Starfighter" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Deep-Space Pixel Starfighter</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Hackathon Racer</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A swift rocket ship with glowing blue thrusters. It represents fast coding hackathons, racing through the stars to build new software tools before the timer runs out.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Starfighter &middot;</span>
+                <span>Rapid strike craft with dual cyan plasma thruster plumes.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 14 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Reverse Tech Domain Marquee, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/badge-react.png" alt="Reverse Tech Domain Marquee" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Reverse Tech Domain Marquee</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Tech Strip</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A moving banner drifting through space like a space station billboard. It constantly displays modern coding tools, web frameworks, and engineering skills.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Telemetry &middot;</span>
+                <span>Continuous scrolling telemetry strip displaying developer skills.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Tier 4: Mid Orbit -->
+      <section class="codex-tier" id="codex-tier-4">
+        <div class="codex-tier-header">
+          <div class="codex-tier-meta">
+            <span class="codex-tier-num">04</span>
+            <span class="codex-tier-dot">&middot;</span>
+            <span class="codex-tier-loc">Projects Section &mdash; Elevation 2,000 km</span>
+          </div>
+          <h3 class="codex-tier-title">Mid Orbit: Broken Space Stations &amp; Lost Relics</h3>
+          <p class="codex-tier-lore">
+            Ruined research stations float in silence where machine fleets attacked human science labs, leaving behind drifting space helmets and robot probes.
+          </p>
+        </div>
+        <div class="codex-grid">
+          <!-- Card 15 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Abandoned Orbital Research Station, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/sprites/abandoned-orbital-station.png" alt="Abandoned Orbital Research Station" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Abandoned Orbital Research Station</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Broken Station</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">Once humanity's greatest scientific space lab, this station was broken and ruined when rogue AI reached orbit. The machines broke its docking rings and smashed its solar panels. Now it floats empty in silence, a ghost station drifting above Earth.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Orbital Relic &middot;</span>
+                <span>Shattered research habitat drifting with scroll parallax.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 16 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="ChatGPT Autonomous Flying Drone, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/mascot-chatgpt.png" alt="ChatGPT Autonomous Flying Drone" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">ChatGPT Autonomous Flying Drone</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Smart Drone</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A friendly green robot drone that flies smoothly in space. It tilts left and right as it hovers above coding projects, keeping software bugs away with smart reasoning.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Sentinel &middot;</span>
+                <span>Hovering cyber drone with a glowing green core and tilt physics.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 17 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Lost Astronaut Helmet, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/pixel-space-helmet.png" alt="Lost Astronaut Helmet" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Lost Astronaut Helmet</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Fallen Explorer</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A cracked gold-visor helmet drifting alone in zero gravity. It belonged to an astronaut who tragically lost their life while trying to escape Earth during the machine uprising. Its reflection holds only the quiet light of distant stars.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Relic &middot;</span>
+                <span>Weightless tumbling helmet memorializing a fallen astronaut.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 18 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Tiny Recon Probe, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/tiny-space-probe.png" alt="Tiny Recon Probe" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Tiny Recon Probe</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Mini Satellite</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A tiny robotic satellite with a blinking yellow radio dish. It spins quietly in orbit, sending software updates and GitHub project data back to safety.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Satellite &middot;</span>
+                <span>Lightweight orbital probe transmitting repository signals.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Tier 5: High Orbit & Celestial Expanse -->
+      <section class="codex-tier" id="codex-tier-5">
+        <div class="codex-tier-header">
+          <div class="codex-tier-meta">
+            <span class="codex-tier-num">05</span>
+            <span class="codex-tier-dot">&middot;</span>
+            <span class="codex-tier-loc">Experience &amp; About &mdash; Elevation 36,000 km</span>
+          </div>
+          <h3 class="codex-tier-title">High Orbit: The Lone Developer &amp; Cosmic Clouds</h3>
+          <p class="codex-tier-lore">
+            Deep in space, the last surviving human developer codes on his laptop in orbit, while massive purple gas clouds crackle with space lightning.
+          </p>
+        </div>
+        <div class="codex-grid">
+          <!-- Card 19 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Claude Divider Line Walker, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/mascot-claude.png" alt="Claude Divider Line Walker" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Claude Divider Line Walker</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">AI Researcher</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A thoughtful orange robot walking along the timeline bar. It flips and turns when it reaches the edge, symbolizing careful thinking, honest answers, and clean code architecture.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Mascot &middot;</span>
+                <span>Thoughtful robot pacing along career milestones.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 20 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Distant Ringed Planet, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/pixel-ringed-planet.png" alt="Distant Ringed Planet" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Distant Ringed Planet</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Ringed Giant</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A giant gas planet with shining cosmic rings far in the distance. Its soft orange glow reminds space travelers how vast the universe is beyond our home world.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Planet &middot;</span>
+                <span>Ringed gas giant floating peacefully in deep space.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 21 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Spacesuit Astronaut Programmer, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/sprites/spacesuit-programmer-body.png" alt="Spacesuit Astronaut Programmer" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Spacesuit Astronaut Programmer</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Last Survivor</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">The last living human developer in the universe. Wearing a cozy white spacesuit and purple headphones, he sits alone above the stars with his glowing laptop. He codes every day, rebuilding human software and keeping humanity's spirit alive in the dark silence of space.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Developer &middot;</span>
+                <span>Lone human astronaut coding in orbit with animated work sprints.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 22 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Volumetric Cosmic Emission Nebula, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/sprites/deep-space-nebula-cloud.png" alt="Volumetric Cosmic Emission Nebula" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Volumetric Cosmic Emission Nebula</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Cosmic Cloud</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A colorful purple and blue gas cloud stretching across deep space. It crackles with real-time plasma lightning bolts that light up the dark vacuum.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Nebula &middot;</span>
+                <span>Ionized cosmic cloud with animated electric lightning strikes.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Tier 6: The Cosmic Singularity -->
+      <section class="codex-tier" id="codex-tier-6">
+        <div class="codex-tier-header">
+          <div class="codex-tier-meta">
+            <span class="codex-tier-num">06</span>
+            <span class="codex-tier-dot">&middot;</span>
+            <span class="codex-tier-loc">Hero Section &mdash; Elevation Infinite</span>
+          </div>
+          <h3 class="codex-tier-title">Deep Space: The Black Hole &amp; Voyager</h3>
+          <p class="codex-tier-lore">
+            The peak of the journey. A spinning supermassive black hole pulls light into its core, drifting alongside humanity's Voyager 1 spacecraft.
+          </p>
+        </div>
+        <div class="codex-grid">
+          <!-- Card 23 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="The Gravitational Black Hole, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/sprites/pixel-black-hole.png" alt="The Gravitational Black Hole" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">The Gravitational Black Hole</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Black Hole</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A massive, swirling black hole at the center of the deep cosmos. Its burning orange ring spins and bends light with immense gravity, representing the power and depth of complex engineering.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Singularity &middot;</span>
+                <span>Swirling gravitational vortex with rotating accretion disk.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 24 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Historical NASA Voyager 1 Probe, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/sprites/voyager-1-isolated.png" alt="Historical NASA Voyager 1 Probe" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Historical NASA Voyager 1 Probe</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Historic Voyager</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">The famous human spacecraft that traveled farther from Earth than any machine in history. Carrying the Golden Record with sounds of Earth, it drifts peacefully into interstellar space.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Voyager &middot;</span>
+                <span>Real NASA probe carrying Earth's message into deep space.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 25 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Distant Beacon Planet, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/pixel-planet.svg" alt="Distant Beacon Planet" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Distant Beacon Planet</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Beacon Planet</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">A lone purple planet shining like a lighthouse at the edge of the galaxy. It guides weary space pilots toward new discoveries.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Planet &middot;</span>
+                <span>Distant celestial world guiding travelers through the void.</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 26 -->
+          <article class="codex-card" tabindex="0" role="button" aria-expanded="false" aria-label="Global Starfield and Asteroid Field, click to view story">
+            <div class="codex-card-main">
+              <div class="codex-card-thumb">
+                <img src="./assets/asteroid-1.png" alt="Global Starfield and Asteroid Field" loading="lazy">
+              </div>
+              <div class="codex-card-info">
+                <div class="codex-card-head">
+                  <h4 class="codex-card-name">Global Starfield &amp; Asteroid Field</h4>
+                  <div class="codex-toggle-hint">
+                    <span class="codex-hint-text">Read story</span>
+                    <span class="codex-hint-arrow" aria-hidden="true">&#9662;</span>
+                  </div>
+                </div>
+                <span class="codex-role-text">Starfield</span>
+              </div>
+            </div>
+            <div class="codex-card-story">
+              <p class="codex-story-text">Thousands of twinkling pixel stars and tumbling space rocks that stretch across the entire sky. They connect every section of the portfolio, from the dusty Earth ground up to the deepest stars.</p>
+              <div class="codex-card-meta">
+                <span class="codex-meta-label">Canvas &amp; 3D &middot;</span>
+                <span>Twinkling pixel starfield and tumbling space asteroids.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </dialog>
+
+<!-- Pixelated Cosmic Starfield Background Canvas -->
   <canvas id="pixel-stars-canvas" aria-hidden="true"></canvas>
 
   <!-- Retro Chunky Pixel-Art Asteroid Field -->
   <div id="asteroid-field" class="asteroid-field" aria-hidden="true"></div>
 
-  <script src="script.js?v=52"></script>
+  <script src="script.js?v=56"></script>
 </body>
 </html>
