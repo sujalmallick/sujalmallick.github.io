@@ -1,11 +1,15 @@
 /* ════════════════════════════════════════════════════════
    RESPONSIVE — SUJAL MALLICK PORTFOLIO
-   Breakpoints: 900px (tablet/hamburger), 600px (mobile)
+   Breakpoints:
+   - 900px (tablet / switch to hamburger nav)
+   - 768px (small tablet & large mobile)
+   - 600px (standard mobile)
+   - 480px (compact mobile)
+   - 380px (ultra-narrow mobile / iPhone SE)
    ════════════════════════════════════════════════════════ */
 
-/* ── 900px — Switch to hamburger, stack hero & about & exp ─── */
+/* ── 900px — Tablet / Stack hero, about & exp ─────────────────── */
 @media screen and (max-width: 900px) {
-
   /* Nav: hide desktop, show hamburger */
   #desktop-nav   { display: none; }
   #hamburger-nav { display: flex; }
@@ -14,7 +18,7 @@
   .profile-inner {
     display: flex;
     flex-direction: column-reverse;
-    gap: 2.5rem;
+    gap: 2.25rem;
     align-items: center;
   }
 
@@ -23,14 +27,73 @@
   #socials-container   { justify-content: center; }
 
   .section__pic-container {
-    width: clamp(160px, 44vw, 260px);
+    width: clamp(160px, 42vw, 240px);
     margin: 0 auto;
+  }
+
+  .hero-black-hole-container {
+    top: 35px;
+    right: -25px;
+    width: clamp(320px, 46vw, 390px);
+    opacity: 0.78;
+  }
+
+  .hero-pixel-planet {
+    top: 12%;
+    left: 10%;
+    right: auto;
+    bottom: auto;
+    width: 38px;
+    height: 38px;
+  }
+
+  .hero-pixel-satellite {
+    top: 8px;
+    bottom: auto;
+    left: calc(50% + 168px);
+    right: auto;
+    width: 44px;
+    height: auto;
+    aspect-ratio: 1205 / 641;
+    z-index: 2;
   }
 
   /* About: single column */
   .about-grid {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
+  }
+
+  /* AI Pixel Mascots — Tablet adjustments */
+  .mascot-chatgpt {
+    left: 14px;
+    bottom: -4px;
+    transform: scale(0.88);
+    transform-origin: bottom center;
+  }
+
+  .mascot-claude {
+    transform: scale(0.88);
+    transform-origin: bottom left;
+  }
+
+  .mascot-gemini {
+    right: -58px;
+    transform: scale(0.88);
+    transform-origin: top right;
+  }
+
+  .edu-divider-character {
+    right: 4%;
+    transform: scale(0.9);
+    transform-origin: 100% 67%;
+  }
+
+  .contact-tux-sprite {
+    width: 34px;
+    height: 34px;
+    background-size: 272px 34px;
+    image-rendering: pixelated;
   }
 
   /* Experience: stack meta above content */
@@ -39,50 +102,564 @@
     gap: 1rem;
   }
 
-  /* Projects featured: slightly less padding */
-  .project-featured { padding: 2rem; }
+  /* Give Claude mascot and speech bubble breathing room above Experience divider */
+  #about {
+    padding-bottom: 7.5rem;
+  }
+  .project-featured-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .project-featured, .project-entry { padding: 1.85rem; }
+
+  /* Hackathons: stack date above content */
+  .timeline-list li {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 2.25rem 0;
+  }
 
   /* Contacts: single column */
   .contacts-grid {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
+
+  /* Distant Pixel Moon — Tablet scaling */
+  .contacts-pixel-moon {
+    width: 130px;
+    height: 130px;
+    right: -38px;
+    top: 175px;
+    opacity: 0.85;
+  }
 }
 
-/* ── 600px — Mobile polish ─────────────────────────────────── */
+/* ── 768px — Small Tablet / Single column grids ───────────────── */
+@media screen and (max-width: 768px) {
+  /* Mobile Zoom & GPU Stability Optimizations */
+  .pixel-asteroid {
+    will-change: auto; /* Avoid allocating 33 hardware-accelerated GPU backing stores on mobile */
+  }
+
+  .hero-black-hole-sprite {
+    /* Lightweight mobile glow instead of heavy dual 45px Gaussian blur passes */
+    filter: brightness(0.92) contrast(0.98) drop-shadow(0 0 14px rgba(194, 84, 26, 0.22));
+  }
+
+  .bh-plasma-turbulence,
+  .hero-black-hole-flare-flow,
+  .hero-black-hole-container {
+    will-change: auto;
+  }
+
+  .project-grid,
+  .cert-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* Verified credentials bar: stack and align */
+  .cert-verify-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .cert-verify-links {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.75rem;
+  }
+
+  .cert-verify-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cert-verify-google-wrap {
+    width: 100%;
+    display: flex;
+  }
+
+  .cert-verify-google-wrap .cert-verify-btn {
+    width: 100%;
+  }
+
+  .mascot-gemini-wrap.mascot-gemini-badge {
+    right: 8px;
+    top: -44px;
+    transform: scale(0.92);
+    transform-origin: bottom right;
+  }
+
+  /* Scaled autonomous flight on tablet */
+  @keyframes chatgptAutonomousFlight {
+    0% { transform: translate3d(0, 0, 0); }
+    16% { transform: translate3d(-35px, -18px, 0); }
+    34% { transform: translate3d(-120px, -22px, 0); }
+    46% { transform: translate3d(-135px, -10px, 0); }
+    62% { transform: translate3d(-65px, -24px, 0); }
+    82% { transform: translate3d(15px, -12px, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+
+  @keyframes geminiAutonomousOrbit {
+    0% { transform: translate3d(0, 0, 0); }
+    25% { transform: translate3d(-24px, -16px, 0); }
+    50% { transform: translate3d(-60px, -10px, 0); }
+    72% { transform: translate3d(-70px, 4px, 0); }
+    88% { transform: translate3d(-28px, 6px, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+}
+
+/* ── 600px — Standard Mobile Polish ───────────────────────────── */
 @media screen and (max-width: 600px) {
   :root {
-    --section-py: 4.5rem;
+    --section-py: 4rem;
     --section-px: 1.25rem;
   }
 
   /* Title scales down gracefully */
-  .title { font-size: clamp(3rem, 14vw, 4.5rem); }
+  .title {
+    font-size: clamp(2.4rem, 11vw, 4rem);
+  }
 
   /* Section headings */
   .section-header h2 {
-    font-size: clamp(1.75rem, 7.5vw, 2.5rem);
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
   }
 
-  /* Hero: reduce gap */
-  #profile { padding: 3rem var(--section-px); }
+  /* Hero */
+  #profile {
+    padding: 2.75rem var(--section-px);
+    min-height: auto;
+  }
 
-  /* Featured project: compact */
-  .project-featured { padding: 1.5rem; }
+  .section__text_p2 {
+    margin-bottom: 1.5rem;
+  }
 
-  /* Pipeline flow: wrap vertically on tiny screens */
+  .btn-container {
+    width: 100%;
+    gap: 0.65rem;
+  }
+
+  .btn {
+    padding: 0.7rem 1.25rem;
+    font-size: 0.7rem;
+  }
+
+  /* Featured & entry project cards: compact padding */
+  .project-featured, .project-entry {
+    padding: 1.35rem 1.15rem;
+  }
+
+  .project-featured-header, .project-entry-header {
+    gap: 0.75rem;
+  }
+
+  .project-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+
+  .metric-item {
+    flex: 1 1 calc(50% - 0.75rem);
+    min-width: 110px;
+  }
+
+  .metric-num {
+    font-size: 1.15rem;
+  }
+
+  /* Architecture flow: vertical sequence with downward arrows */
   .arch-flow {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.35rem;
   }
 
-  .arch-arrow { transform: rotate(90deg); margin-left: 0.5rem; }
+  .arch-arrow {
+    transform: rotate(90deg);
+    margin-left: 0.5rem;
+  }
 
-  /* Project index number: slightly smaller */
-  .project-index { font-size: 2.2rem; }
+  .project-index {
+    font-size: 1.75rem !important;
+    min-width: 1.75rem !important;
+  }
 
-  /* Contact form full-width button already handled by btn--wide */
+  .more-projects {
+    grid-template-columns: 1fr;
+  }
 
+  /* Certificate cards: compact mobile padding */
+  .cert-card {
+    padding: 1.4rem 1.15rem;
+  }
+
+  /* Timeline */
+  .timeline-links {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Mobile input zoom prevention (iOS Safari) */
+  .form-group input,
+  .form-group textarea {
+    font-size: 16px !important;
+  }
+
+  /* AI Pixel Mascots — Mobile adjustments */
+  .mascot-chatgpt {
+    left: 10px;
+    bottom: -4px;
+    transform: scale(0.78);
+    transform-origin: bottom center;
+  }
+
+  .chatgpt-bubble {
+    width: 40px;
+    top: -42px;
+  }
+
+  .mascot-claude {
+    transform: scale(0.82);
+    transform-origin: bottom left;
+  }
+
+  .claude-bubble {
+    width: 40px;
+    top: -42px;
+    left: 10px;
+  }
+
+  .mascot-gemini {
+    right: 8px;
+    top: -42px;
+    transform: scale(0.82);
+    transform-origin: top right;
+  }
+
+  .gemini-bubble {
+    width: 40px;
+    top: -42px;
+  }
+
+  /* ChatGPT Forward Propulsion Motion on Mobile */
+  @keyframes chatgpt-thrust-forward-mobile {
+    0% {
+      transform: scale(0.78) translateX(0) translateY(0);
+    }
+    16% {
+      transform: scale(0.78) translateX(-3px) translateY(1px) rotate(-2deg);
+    }
+    40% {
+      transform: scale(0.78) translateX(24px) translateY(-4px) rotate(2deg);
+    }
+    62% {
+      transform: scale(0.78) translateX(22px) translateY(-2px) rotate(1deg);
+    }
+    84% {
+      transform: scale(0.78) translateX(7px) translateY(-1px);
+    }
+    100% {
+      transform: scale(0.78) translateX(0) translateY(0);
+    }
+  }
+
+  .mascot-chatgpt.chatgpt-forward {
+    animation: chatgpt-thrust-forward-mobile 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+  }
+
+  /* Scaled autonomous flight on mobile */
+  @keyframes chatgptAutonomousFlight {
+    0% { transform: translate3d(0, 0, 0); }
+    25% { transform: translate3d(-25px, -14px, 0); }
+    50% { transform: translate3d(-50px, -8px, 0); }
+    75% { transform: translate3d(-18px, -16px, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+
+  @keyframes geminiAutonomousOrbit {
+    0% { transform: translate3d(0, 0, 0); }
+    25% { transform: translate3d(-15px, -10px, 0); }
+    50% { transform: translate3d(-34px, -6px, 0); }
+    72% { transform: translate3d(-40px, 3px, 0); }
+    88% { transform: translate3d(-18px, 4px, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+
+  .edu-divider-character {
+    right: 3%;
+    transform: scale(0.85);
+    transform-origin: 100% 67%;
+  }
+
+  .contact-tux-sprite {
+    width: 32px;
+    height: 32px;
+    background-size: 256px 32px;
+    image-rendering: pixelated;
+  }
+
+  /* Footer living pixel scenery */
+  .prop-terminator,
+  .prop-cyborg {
+    bottom: 0;
+  }
+
+  /* Distant Pixel Moon — Compact Mobile scaling */
+  .contacts-pixel-moon {
+    width: 76px;
+    height: 76px;
+    right: -24px;
+    top: 145px;
+    opacity: 0.82;
+  }
+}
+
+/* ── 480px — Compact Mobile Layout ─────────────────────────── */
+@media screen and (max-width: 480px) {
+  :root {
+    --section-px: 1rem;
+    --section-py: 3.5rem;
+  }
+
+  .section__pic-container {
+    width: clamp(140px, 48vw, 200px);
+  }
+
+  .hero-black-hole-container {
+    top: 35px;
+    right: -15px;
+    width: clamp(230px, 64vw, 280px);
+    opacity: 0.72;
+  }
+
+  .hero-pixel-planet {
+    top: 10%;
+    left: 8%;
+    right: auto;
+    bottom: auto;
+    width: 32px;
+    height: 32px;
+  }
+
+  .hero-pixel-satellite {
+    top: 102px;
+    bottom: auto;
+    left: auto;
+    right: 12px;
+    width: 32px;
+    height: auto;
+    aspect-ratio: 1205 / 641;
+    z-index: 2;
+  }
+
+  .title {
+    font-size: clamp(2.1rem, 9.5vw, 3rem);
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.45rem, 6.5vw, 1.95rem);
+  }
+
+  .btn-container .btn {
+    flex: 1 1 100%;
+    text-align: center;
+  }
+
+  .menu-links {
+    min-width: 180px;
+  }
+
+  .menu-links li a {
+    padding: 0.85rem 1.25rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .mascot-chatgpt {
+    left: 8px;
+    bottom: -2px;
+    transform: scale(0.78);
+    transform-origin: bottom center;
+  }
+
+  .chatgpt-bubble {
+    width: 42px;
+    top: -44px;
+  }
+
+  .mascot-claude {
+    transform: scale(0.78);
+    transform-origin: bottom left;
+  }
+
+  .claude-bubble {
+    width: 38px;
+    top: -40px;
+    left: 8px;
+  }
+
+  .mascot-gemini {
+    right: 4px;
+    top: -38px;
+    transform: scale(0.78);
+    transform-origin: top right;
+  }
+
+  .gemini-bubble {
+    width: 38px;
+    top: -40px;
+  }
+
+  .edu-divider-character {
+    right: 2%;
+    transform: scale(0.8);
+    transform-origin: 100% 67%;
+  }
+
+}
+
+/* ── 380px — Ultra-Narrow Mobile (iPhone SE, Galaxy Fold) ───── */
+@media screen and (max-width: 380px) {
+  :root {
+    --section-px: 0.85rem;
+    --section-py: 3rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.35rem;
+    line-height: 1.22;
+  }
+
+  .section-label {
+    margin-bottom: 0.75rem;
+    font-size: 0.62rem;
+  }
+
+  .btn {
+    padding: 0.65rem 1rem;
+    font-size: 0.65rem;
+  }
+
+  .mascot-chatgpt {
+    left: 6px;
+    bottom: -2px;
+    transform: scale(0.62);
+    transform-origin: bottom center;
+  }
+
+  .chatgpt-bubble {
+    width: 36px;
+    top: -38px;
+  }
+
+  .chatgpt-thruster-glow {
+    width: 18px;
+    height: 6px;
+  }
+
+  .mascot-claude {
+    transform: scale(0.74);
+    transform-origin: bottom left;
+  }
+
+  .claude-bubble {
+    width: 36px;
+    top: -38px;
+    left: 6px;
+  }
+
+  .mascot-gemini {
+    right: 0px;
+    top: -34px;
+    transform: scale(0.74);
+    transform-origin: top right;
+  }
+
+  .gemini-bubble {
+    width: 36px;
+    top: -38px;
+  }
+
+  /* ChatGPT Forward Propulsion Motion on Ultra-Narrow Mobile */
+  @keyframes chatgpt-thrust-forward-narrow {
+    0% {
+      transform: scale(0.62) translateX(0) translateY(0);
+    }
+    16% {
+      transform: scale(0.62) translateX(-2px);
+    }
+    40% {
+      transform: scale(0.62) translateX(16px) translateY(-3px);
+    }
+    62% {
+      transform: scale(0.62) translateX(15px) translateY(-1px);
+    }
+    84% {
+      transform: scale(0.62) translateX(5px);
+    }
+    100% {
+      transform: scale(0.62) translateX(0) translateY(0);
+    }
+  }
+
+  .mascot-chatgpt.chatgpt-forward {
+    animation: chatgpt-thrust-forward-narrow 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+  }
+
+  /* Ultra-narrow mobile: tight contained hovering orbit */
+  @keyframes chatgptAutonomousFlight {
+    0% { transform: translate3d(0, 0, 0); }
+    25% { transform: translate3d(-16px, -10px, 0); }
+    50% { transform: translate3d(-34px, -6px, 0); }
+    75% { transform: translate3d(-12px, -12px, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+
+  @keyframes geminiAutonomousOrbit {
+    0% { transform: translate3d(0, 0, 0); }
+    25% { transform: translate3d(-16px, -12px, 0); }
+    50% { transform: translate3d(-36px, -8px, 0); }
+    75% { transform: translate3d(-18px, 4px, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+
+  .edu-divider-character {
+    right: 1%;
+    transform: scale(0.74);
+    transform-origin: 100% 67%;
+  }
+
+  /* Distant Pixel Moon — Ultra-narrow Mobile scaling */
+  .contacts-pixel-moon {
+    width: 64px;
+    height: 64px;
+    right: -20px;
+    top: 130px;
+    opacity: 0.78;
+  }
+
+  /* Distant Voyager 1 — Ultra-narrow Mobile scaling */
+  .hero-pixel-satellite {
+    top: 100px;
+    bottom: auto;
+    left: auto;
+    right: 8px;
+    width: 28px;
+  }
 
 }

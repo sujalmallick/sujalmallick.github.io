@@ -14,17 +14,17 @@
   --accent:       #B85C38;
   --accent-hover: #96471E;
 
-  /* Light mode (default) */
-  --bg:           #FAFAF8;
-  --bg-surface:   #F2F1EC;
-  --text:         #111110;
-  --text-muted:   #69696A;
-  --border:       #D4D3CC;
-  --border-light: #E8E7E0;
+  /* Dark mode (Standard / Permanent) */
+  --bg:           #0F0F0E;
+  --bg-surface:   #1A1A18;
+  --text:         #EDECE5;
+  --text-muted:   #888882;
+  --border:       #2E2E2A;
+  --border-light: #232321;
 
   /* Layout */
   --nav-h:        64px;
-  --section-py:   7rem;
+  --section-py:   clamp(4rem, 6vw, 5.25rem);
   --section-px:   clamp(1.5rem, 7vw, 8rem);
   --max-w:        1080px;
 
@@ -32,7 +32,6 @@
   --ease: 0.28s ease;
 }
 
-/* Dark mode — manual override via data-theme="dark" */
 [data-theme="dark"] {
   --bg:           #0F0F0E;
   --bg-surface:   #1A1A18;
@@ -40,18 +39,6 @@
   --text-muted:   #888882;
   --border:       #2E2E2A;
   --border-light: #232321;
-}
-
-/* Dark mode — system preference, no manual override set yet */
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) {
-    --bg:           #0F0F0E;
-    --bg-surface:   #1A1A18;
-    --text:         #EDECE5;
-    --text-muted:   #888882;
-    --border:       #2E2E2A;
-    --border-light: #232321;
-  }
 }
 
 /* ── 2. RESET & BASE ──────────────────────────────────────────────────── */
@@ -64,6 +51,8 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -73,6 +62,9 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.25s ease, color 0.25s ease;
+  overflow-x: hidden;
+  max-width: 100vw;
+  position: relative;
 }
 
 img { max-width: 100%; display: block; }
@@ -90,7 +82,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: (--nav-h);
+  height: var(--nav-h);
   transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
@@ -128,37 +120,9 @@ nav {
   color: var(--text);
 }
 
-/* Theme toggle button */
+/* Theme toggle button (Hidden - pure dark mode) */
 .theme-toggle {
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  width: 34px;
-  height: 34px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  transition: color var(--ease), border-color var(--ease);
-  flex-shrink: 0;
-  font-size: 14px;
-  line-height: 1;
-}
-
-.theme-toggle:hover {
-  color: var(--text);
-  border-color: var(--text);
-}
-
-/* Sun icon in light mode */
-.theme-icon::before { content: '☀'; }
-
-/* Moon icon in dark mode */
-[data-theme="dark"] .theme-icon::before { content: '☽'; }
-
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .theme-icon::before { content: '☽'; }
+  display: none !important;
 }
 
 /* ── 4. HAMBURGER NAV (mobile) ────────────────────────────────────────── */
@@ -208,7 +172,7 @@ nav {
   transition: max-height 0.3s ease;
 }
 
-.menu-links.open { max-height: 320px; }
+.menu-links.open { max-height: 420px; }
 
 .menu-links li a {
   display: block;
@@ -229,10 +193,23 @@ nav {
 section {
   padding: var(--section-py) var(--section-px);
   border-top: 1px solid var(--border-light);
+  position: relative;
+  z-index: 2;
 }
 
 .section-header {
-  margin-bottom: 4rem;
+  position: relative;
+  z-index: 5;
+  margin-bottom: clamp(2.5rem, 4vw, 3.25rem);
+  max-width: fit-content;
+}
+
+.section-header--with-mascot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: clamp(1.5rem, 3.5vw, 3rem);
+  max-width: 100%;
 }
 
 .section-label {
@@ -256,8 +233,8 @@ section {
 }
 
 .section-header h2 em {
-  font-style: italic !important;
-  color: var(--accent) !important;
+  font-style: italic;
+  color: var(--text-muted);
 }
 
 #about .section-header h2 em { color: var(--accent); }
@@ -304,14 +281,18 @@ section {
 
 /* ── 7. HERO / PROFILE ────────────────────────────────────────────────── */
 #profile {
+  position: relative;
   min-height: calc(100svh - var(--nav-h));
   display: flex;
   align-items: center;
   border-top: none;
   padding: 4rem var(--section-px);
+
 }
 
 .profile-inner {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 5rem;
@@ -328,17 +309,431 @@ section {
   z-index: 1;
 }
 
+/* Distant Small Pixel Planet (Upper-left celestial background, balanced against black hole) */
+.hero-pixel-planet {
+  position: absolute;
+  top: 14%;
+  left: clamp(28px, 14vw, 220px);
+  right: auto;
+  bottom: auto;
+  width: 46px;
+  height: 46px;
+  z-index: 1; /* Sits in background sky behind foreground content */
+  pointer-events: none;
+  user-select: none;
+  animation: hero-planet-drift 32s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.hero-planet-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.07));
+}
+
+@keyframes hero-planet-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(5px, -7px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* NASA Voyager 1 Spacecraft (Historical 16-bit pixel art floating beside Contact Info) */
+.hero-pixel-satellite {
+  position: absolute;
+  top: 8px;
+  bottom: auto;
+  left: 338px;
+  right: auto;
+  width: clamp(48px, 3.8vw, 54px);
+  height: auto;
+  aspect-ratio: 1205 / 641;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.hero-satellite-drift-wrap {
+  width: 100%;
+  height: 100%;
+  animation: hero-satellite-drift 64s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.hero-satellite-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  opacity: 0.78;
+  filter: brightness(0.90) contrast(0.98);
+}
+
+@keyframes hero-satellite-drift {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  28% {
+    transform: translate3d(8px, -5px, 0) rotate(1.5deg);
+  }
+  68% {
+    transform: translate3d(14px, 3px, 0) rotate(-1deg);
+  }
+  100% {
+    transform: translate3d(6px, -2px, 0) rotate(1.8deg);
+  }
+}
+
+.hero-pixel-satellite.celestial-offscreen .hero-satellite-drift-wrap,
+.hero-pixel-planet.celestial-offscreen {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-pixel-planet,
+  .hero-pixel-satellite,
+  .hero-satellite-drift-wrap {
+    animation: none !important;
+  }
+}
+
+/* ── DISTANT ANIMATED PIXEL-ART BLACK HOLE WITH ACCRETION TAIL (CLEAN SPRITE) ── */
+.hero-black-hole-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1; /* Cosmic background layer behind foreground photo & text */
+}
+
+/* Celestial Anchor: positioned in upper-right sky with sweeping accretion tail */
+.hero-black-hole-container {
+  position: absolute;
+  top: clamp(45px, 8vh, 90px);
+  right: clamp(-50px, -3.5vw, -10px);
+  width: clamp(520px, 46vw, 680px);
+  aspect-ratio: 1262 / 528;
+  pointer-events: none;
+  will-change: transform;
+  animation: bhFrameDragging 48s ease-in-out infinite alternate;
+}
+
+@supports (animation-timeline: scroll(root)) {
+  .hero-black-hole-container {
+    animation: bh-scroll-parallax linear both, bhFrameDragging 48s ease-in-out infinite alternate;
+    animation-timeline: scroll(root), auto;
+    animation-range: 0px 800px, auto;
+  }
+}
+
+@keyframes bh-scroll-parallax {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(85px);
+  }
+}
+
+/* ── ACCRETION FLARE HYDRODYNAMICS & RELATIVISTIC PLASMA FLOW ── */
+.hero-black-hole-flare-flow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 78% 48%; /* Anchored at singularity */
+  animation: bhTailSinuousWave 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+  will-change: transform;
+}
+
+.hero-black-hole-sprite {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  opacity: 0.88;
+  filter: brightness(0.92) contrast(0.98) drop-shadow(0 0 20px rgba(194, 84, 26, 0.14)) drop-shadow(0 0 45px rgba(0, 0, 0, 0.9));
+  pointer-events: none;
+}
+
+/* Internal moving plasma density overlay (masked exclusively to the tail) */
+.bh-plasma-turbulence {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  mix-blend-mode: screen;
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 58%, rgba(0, 0, 0, 0) 76%);
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 58%, rgba(0, 0, 0, 0) 76%);
+  animation: bhPlasmaCurrentShift 4.2s ease-in-out infinite alternate;
+  will-change: transform, filter, opacity;
+  pointer-events: none;
+}
+
+/* 16-Bit Chunky Coronal Flare Sparks Ejecting from Tail */
+.bh-flare-embers-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.bh-flare-ember {
+  position: absolute;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  border-radius: 0;
+  pointer-events: none;
+}
+
+.bh-flare-ember.ember-1 {
+  width: 3px;
+  height: 3px;
+  background: #fde047;
+  box-shadow: 0 0 4px #f59e0b;
+  animation: emberFloat1 5.5s cubic-bezier(0.2, 0, 0.15, 1) infinite;
+}
+
+.bh-flare-ember.ember-2 {
+  width: 2px;
+  height: 2px;
+  background: #fffbeb;
+  box-shadow: 0 0 3px #ea580c;
+  animation: emberFloat2 6.8s cubic-bezier(0.2, 0, 0.15, 1) infinite 1.8s;
+}
+
+.bh-flare-ember.ember-3 {
+  width: 3px;
+  height: 2px;
+  background: #f59e0b;
+  box-shadow: 0 0 4px #c2410c;
+  animation: emberFloat3 7.2s cubic-bezier(0.2, 0, 0.15, 1) infinite 3.5s;
+}
+
+.bh-flare-ember.ember-4 {
+  width: 2px;
+  height: 2px;
+  background: #fde047;
+  box-shadow: 0 0 3px #f59e0b;
+  animation: emberFloat4 6.0s cubic-bezier(0.2, 0, 0.15, 1) infinite 4.2s;
+}
+
+/* Sinuous Wave along Tail (Singularity stays pinned) */
+@keyframes bhTailSinuousWave {
+  0% {
+    transform: rotate(0deg) skew(0deg, 0deg) scale(1, 1);
+  }
+  25% {
+    transform: rotate(-1.5deg) skew(-1.6deg, 0.8deg) scale(0.99, 1.025);
+  }
+  50% {
+    transform: rotate(0.8deg) skew(0.9deg, -0.4deg) scale(1.01, 0.985);
+  }
+  75% {
+    transform: rotate(-0.9deg) skew(-1.1deg, 0.5deg) scale(0.995, 1.015);
+  }
+  100% {
+    transform: rotate(1.8deg) skew(1.5deg, -0.8deg) scale(1.015, 0.98);
+  }
+}
+
+/* Internal Thermal Current (Shifting Plasma Density) */
+@keyframes bhPlasmaCurrentShift {
+  0% {
+    transform: translate3d(-3px, -2px, 0) scale(1.01);
+    filter: brightness(1.15) contrast(1.05);
+    opacity: 0.45;
+  }
+  35% {
+    filter: brightness(1.35) contrast(1.12);
+    opacity: 0.70;
+  }
+  65% {
+    transform: translate3d(3px, 2px, 0) scale(0.99);
+    filter: brightness(1.40) contrast(1.15);
+    opacity: 0.80;
+  }
+  100% {
+    transform: translate3d(-1px, 3px, 0) scale(1.005);
+    filter: brightness(1.18) contrast(1.08);
+    opacity: 0.50;
+  }
+}
+
+/* Coronal Embers Breaking Off Flare Ridges */
+@keyframes emberFloat1 {
+  0% {
+    top: 72%;
+    left: 18%;
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  20% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+  70% {
+    top: 62%;
+    left: 28%;
+    opacity: 0.8;
+    transform: scale(0.9) translate3d(4px, -12px, 0);
+  }
+  100% {
+    top: 54%;
+    left: 34%;
+    opacity: 0;
+    transform: scale(0.2) translate3d(8px, -22px, 0);
+  }
+}
+
+@keyframes emberFloat2 {
+  0% {
+    top: 60%;
+    left: 38%;
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  75% {
+    top: 48%;
+    left: 47%;
+    opacity: 0.75;
+    transform: scale(0.8) translate3d(6px, -14px, 0);
+  }
+  100% {
+    top: 40%;
+    left: 52%;
+    opacity: 0;
+    transform: scale(0.2) translate3d(10px, -24px, 0);
+  }
+}
+
+@keyframes emberFloat3 {
+  0% {
+    top: 66%;
+    left: 48%;
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  20% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+  70% {
+    top: 56%;
+    left: 58%;
+    opacity: 0.7;
+    transform: scale(0.85) translate3d(-5px, -15px, 0);
+  }
+  100% {
+    top: 49%;
+    left: 64%;
+    opacity: 0;
+    transform: scale(0.2) translate3d(-10px, -26px, 0);
+  }
+}
+
+@keyframes emberFloat4 {
+  0% {
+    top: 52%;
+    left: 56%;
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  30% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+  80% {
+    top: 44%;
+    left: 66%;
+    opacity: 0.6;
+    transform: scale(0.7) translate3d(4px, -10px, 0);
+  }
+  100% {
+    top: 42%;
+    left: 70%;
+    opacity: 0;
+    transform: scale(0.1) translate3d(8px, -18px, 0);
+  }
+}
+
+/* Celestial precession / frame dragging */
+@keyframes bhFrameDragging {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  30% {
+    transform: translate3d(-10px, 6px, 0) rotate(0.9deg);
+  }
+  65% {
+    transform: translate3d(-5px, -8px, 0) rotate(-0.7deg);
+  }
+  100% {
+    transform: translate3d(7px, -4px, 0) rotate(1.2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-black-hole-container,
+  .hero-black-hole-flare-flow,
+  .hero-black-hole-sprite,
+  .bh-plasma-turbulence,
+  .bh-flare-ember {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
 .profile-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%; /* Circular photo */
+  border: 3px solid #CFC6B5;
+  box-shadow: 0 0 0 1px #1A1A1D, 0 12px 32px rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
   filter: grayscale(15%);
   transition: filter 0.4s ease;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2; /* Sits above canvas */
+  z-index: 2; /* Sits above background */
 }
 
 .profile-photo:hover { filter: grayscale(0%); }
@@ -359,7 +754,7 @@ section {
 
 .title {
   font-family: var(--font-serif);
-  font-size: clamp(3.5rem, 7.5vw, 6.5rem);
+  font-size: clamp(2.75rem, 7.5vw, 6.5rem);
   font-weight: 400;
   line-height: 1.0;
   letter-spacing: -0.03em;
@@ -378,6 +773,7 @@ section {
 
 /* Buttons */
 .btn-container {
+  position: relative;
   display: flex;
   gap: 0.75rem;
   margin-bottom: 2rem;
@@ -446,10 +842,13 @@ section {
 
 /* ── 8. ABOUT ──────────────────────────────────────────────────────────── */
 .about-grid {
+  position: relative;
+  z-index: 4;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5rem;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
   max-width: var(--max-w);
+  align-items: start;
 }
 
 .about-bio p {
@@ -462,18 +861,183 @@ section {
 .about-bio p:last-child { margin-bottom: 0; }
 .about-bio strong { color: var(--text); font-weight: 600; }
 
+/* Education Credentials */
+.about-education {
+  position: relative;
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+  z-index: 10;
+}
+
+/* Retro Pixel Spacesuit Programmer — Autonomous Education Ledge Coder */
+.edu-divider-character {
+  position: absolute;
+  top: -61px; /* Thigh contact line at Y=67.9% sits flush on the 1px divider border */
+  right: 6%;
+  width: 66px;
+  height: 90px;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 20;
+  user-select: none;
+  -webkit-user-select: none;
+  transform-origin: 100% 67%;
+}
+
+.edu-divider-character:hover .edu-programmer-sprite {
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45));
+}
+
+.edu-programmer-bubble {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  right: -6px;
+  background: rgba(10, 25, 40, 0.95);
+  border: 1px solid #38bdf8;
+  color: #7dd3fc;
+  font-family: var(--font-mono, 'Courier New', monospace);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  max-width: 260px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 10px rgba(56, 189, 248, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 30;
+}
+
+@media (max-width: 560px) {
+  .edu-programmer-bubble {
+    font-size: 10px;
+    padding: 2px 6px;
+    max-width: 200px;
+    right: 0;
+  }
+}
+
+.edu-programmer-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 28px;
+  border-width: 4px 4px 0 4px;
+  border-style: solid;
+  border-color: #38bdf8 transparent transparent transparent;
+}
+
+.edu-programmer-bubble.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.edu-programmer-bubble .bubble-prompt {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.edu-programmer-bubble .bubble-text {
+  color: #bae6fd;
+  letter-spacing: 0.02em;
+}
+
+.edu-programmer-sprite {
+  width: 66px;
+  height: 90px;
+  background-image: url('./assets/sprites/modern-spacesuit-programmer-sheet.png');
+  background-size: 792px 90px;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  transform-origin: 50% 68%;
+  will-change: background-position, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edu-divider-character {
+    transition: none !important;
+  }
+  .edu-programmer-sprite {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+
+.edu-label {
+  display: block;
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.edu-card {
+  margin-bottom: 0.9rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: 2px;
+  transition: border-color var(--ease);
+}
+
+.edu-card:last-child { margin-bottom: 0; }
+.edu-card:hover { border-color: var(--border); }
+
+.edu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.edu-school {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.edu-year {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.edu-degree {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 0 !important;
+}
+
+.edu-degree strong { color: var(--text); }
+
 .skills-heading {
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .skills-group {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
+  margin-bottom: 1.15rem;
+  padding-bottom: 1.15rem;
   border-bottom: 1px solid var(--border-light);
 }
 
@@ -609,32 +1173,106 @@ section {
   border-radius: 2px;
 }
 
+/* Experience Sub-sections */
+.exp-subhead {
+  padding-top: 2.25rem;
+  padding-bottom: 0.75rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 0.5rem;
+}
+
+.exp-subhead:first-child {
+  padding-top: 0;
+  border-top: none;
+  margin-top: 0;
+}
+
+.exp-subhead-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.exp-subhead + .exp-entry {
+  border-top: none;
+  padding-top: 1.25rem;
+}
+
+.company-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: border-color var(--ease), color var(--ease);
+}
+
+.company-link:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
 /* ── 10. PROJECTS ──────────────────────────────────────────────────────── */
 
 /* — Featured flagship card — */
 .project-featured {
+  position: relative;
+  z-index: 2;
   border: 1px solid var(--border);
-  padding: 2.5rem;
+  padding: 2.25rem 2.5rem;
   max-width: var(--max-w);
-  background: var(--bg-surface);
+  background: rgba(20, 20, 22, 0.65);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   transition: border-color var(--ease);
   margin-bottom: 0;
 }
 
 .project-featured:hover { border-color: var(--text-muted); }
 
+.project-featured-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2.25rem;
+  align-items: stretch;
+}
+
+.project-featured-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.project-featured-aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+.project-featured-aside .architecture-callout {
+  margin-bottom: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(12, 12, 14, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  padding: 1.35rem 1.4rem;
+}
+
 .project-featured-header {
   display: flex;
   align-items: flex-start;
   gap: 1.25rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .project-entry-header {
   display: flex;
   align-items: flex-start;
-  gap: 1.25rem;
-  margin-bottom: 0.875rem;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
 }
 
 .project-index {
@@ -693,19 +1331,61 @@ section {
   transform: translate(2px, -2px);
 }
 
+.project-links-group {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
 .project-description {
   font-size: 0.93rem;
   color: var(--text-muted);
   line-height: 1.82;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
-/* Architecture callout (BugMind AI) */
+/* Engineering Metrics Highlight */
+.project-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.4rem;
+  margin-bottom: 1.15rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.metric-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.metric-num {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.metric-label {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Architecture callout */
 .architecture-callout {
   border-left: 2px solid var(--accent);
   padding: 0.875rem 1.1rem;
-  margin-bottom: 1.5rem;
-  background: var(--bg);
+  margin-bottom: 1.25rem;
+  background: rgba(12, 12, 14, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .arch-label {
@@ -721,18 +1401,18 @@ section {
 .arch-flow {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   flex-wrap: wrap;
   margin-bottom: 0.5rem;
 }
 
 .arch-node {
   font-family: 'Courier New', 'Consolas', monospace;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--text);
-  background: var(--bg-surface);
-  padding: 0.18rem 0.55rem;
+  background: rgba(20, 20, 22, 0.60);
+  padding: 0.16rem 0.5rem;
   border: 1px solid var(--border);
   border-radius: 2px;
 }
@@ -740,7 +1420,7 @@ section {
 .arch-arrow {
   color: var(--accent);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 .arch-sub {
@@ -764,21 +1444,241 @@ section {
 .stack-item { font-weight: 500; }
 .stack-sep  { color: var(--border); }
 
-/* Project list (items 02, 03) */
-.project-list { max-width: var(--max-w); }
-
-.project-entry {
-  padding: 2rem 0;
-  border-top: 1px solid var(--border-light);
-  transition: all var(--ease);
+/* Project Grid (2 columns on desktop) */
+.project-grid {
+  position: relative;
+  z-index: 2;
+  max-width: var(--max-w);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-.project-entry:last-child {
-  border-bottom: 1px solid var(--border-light);
+.project-entry {
+  border: 1px solid var(--border);
+  padding: 1.75rem 1.85rem;
+  background: rgba(20, 20, 22, 0.65);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color var(--ease), transform var(--ease);
+}
+
+.project-entry:hover {
+  border-color: var(--text-muted);
+}
+
+.project-entry .project-index {
+  font-size: 2.2rem;
+  min-width: 2.2rem;
+}
+
+.project-entry .project-title {
+  font-size: 1.25rem;
+}
+
+.project-entry .project-description {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-bottom: 1.15rem;
+}
+
+.project-entry .architecture-callout {
+  padding: 0.75rem 0.95rem;
+  margin-bottom: 1.15rem;
+}
+
+.project-entry .arch-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.4rem;
+}
+
+.project-entry .arch-flow {
+  gap: 0.3rem 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.project-entry .arch-node {
+  font-size: 0.72rem;
+  padding: 0.12rem 0.42rem;
+}
+
+.project-entry .arch-arrow {
+  font-size: 0.82rem;
+}
+
+.project-entry .arch-sub {
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.project-entry .project-stack {
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-light);
+  font-size: 0.74rem;
+}
+
+/* Card 6: More Explorations on GitHub */
+.more-projects-card .project-index {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: 0.9;
+}
+
+.more-repos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 1.15rem;
+}
+
+.more-repo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.8rem;
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  border-radius: 2px;
+  text-decoration: none;
+  transition: border-color var(--ease), transform var(--ease);
+}
+
+.more-repo-item:hover {
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+
+.more-repo-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.more-repo-name {
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+  transition: color var(--ease);
+}
+
+.more-repo-item:hover .more-repo-name {
+  color: var(--accent);
+}
+
+.more-repo-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.more-repo-item .arrow-ext {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: color var(--ease), transform var(--ease);
+  margin-left: 0.5rem;
+  flex-shrink: 0;
+}
+
+.more-repo-item:hover .arrow-ext {
+  color: var(--accent);
+  transform: translate(2px, -2px);
+}
+
+
+/* Projects Collapsible & Toggle */
+.project-collapsible.is-collapsed {
+  display: none !important;
+}
+
+.projects-toggle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  margin-top: 2.5rem;
+  position: relative;
+}
+
+.projects-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1.65rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all var(--ease);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 4px;
+}
+
+.projects-toggle-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.projects-toggle-icon {
+  font-size: 0.95rem;
+  display: inline-block;
+  transition: transform var(--ease);
+}
+
+.projects-toggle-btn[aria-expanded="true"] .projects-toggle-icon {
+  transform: rotate(180deg);
 }
 
 /* ── 11. CONTACTS ──────────────────────────────────────────────────────── */
+#contacts {
+  padding-bottom: 6.5rem;
+}
+
+/* Distant Large Pixel-Art Moon in Contact Sky (Cropped at Right Edge) */
+.contacts-moon-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.contacts-pixel-moon {
+  position: absolute;
+  right: -52px; /* Approximately 28% cropped off-screen at the right edge */
+  top: clamp(250px, 32%, 310px); /* Positioned further downward beside contact inputs */
+  width: 180px;
+  height: 180px;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  opacity: 0.88;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.65));
+}
+
 .contacts-grid {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 5rem;
@@ -833,9 +1733,42 @@ section {
 
 /* Contact form */
 .contact-form {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
+  padding-top: 1.25rem;
+}
+
+/* Roaming Retro Linux Tux Penguin Track & Sprite */
+.contact-tux-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  overflow: visible;
+}
+
+.contact-tux-sprite {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  background-image: url('./assets/pixel-tux-sheet.png');
+  background-size: 144px 216px; /* 4 columns (144px) x 6 rows (216px) */
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  transform-origin: bottom center;
+  transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.4, 1);
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+  will-change: transform, left, top;
 }
 
 .form-group {
@@ -845,11 +1778,22 @@ section {
 }
 
 .form-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
   font-size: 0.63rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
+}
+
+.form-group label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-light);
+  min-width: 24px;
 }
 
 .form-group input,
@@ -879,33 +1823,735 @@ section {
 }
 
 /* ── 12. FOOTER ────────────────────────────────────────────────────────── */
+footer.footer,
 footer {
-  border-top: 1px solid var(--border-light);
-  padding: 1.75rem var(--section-px);
+  width: 100%;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-top: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  position: relative;
+  z-index: 2;
+  overflow: visible;
+  --ground-y: 18px;
 }
 
 .footer-inner {
+  width: 100%;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative;
+  background: transparent !important;
+  min-height: 100px;
+  overflow: visible;
+}
+
+.footer-scenery-strip {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  background: transparent !important;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Ground line & sand bedding: physical pixel terrain layer anchored below var(--ground-y) */
+.footer-ground-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: var(--ground-y);
+  bottom: 0;
+  background-image: url('./assets/footer-ground-sand-bed.png');
+  background-repeat: repeat-x;
+  background-position: 0 0;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Relative props strip anchored directly to the ground line */
+.footer-props-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--ground-y);
+  width: 100%;
+  height: 0;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.footer-prop {
+  position: absolute;
+  bottom: 0;
+  display: block;
+  user-select: none;
+  pointer-events: auto;
+}
+
+.prop-img {
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Background Prop: Floating Space Debris Cluster */
+.prop-debris {
+  position: absolute;
+  top: 14px;
+  right: 12%;
+  width: 44px;
+  height: 26px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.85;
+  animation: space-debris-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes space-debris-drift {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  50%  { transform: translate(-14px, 4px) rotate(1.5deg); }
+  100% { transform: translate(-26px, -2px) rotate(-1deg); }
+}
+
+/* 1. Left Lamp (6%) */
+.prop-lamp-left {
+  left: 6%;
+  width: 27px;
+  height: 78px;
+  z-index: 5;
+}
+
+/* Ground Element 1: Luminous Space Crystals (10%) */
+.prop-crystals {
+  left: 10%;
+  width: 28px;
+  height: 22px;
+  z-index: 2;
+}
+
+.prop-crystals::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 16px;
+  height: 12px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.35) 0%, rgba(34, 211, 238, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: crystal-glow-pulse 3.6s ease-in-out infinite;
+}
+
+@keyframes crystal-glow-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.95); }
+  50%      { opacity: 1;   transform: scale(1.1); }
+}
+
+/* 2. Left Plant (14%) */
+.prop-plant-left {
+  left: 14%;
+  width: 16px;
+  height: 38px;
+  z-index: 3;
+}
+
+/* Ground Element 2: Space Rocks & Micro Flora (19%) */
+.prop-rocks-custom {
+  left: 19%;
+  width: 32px;
+  height: 12px;
+  z-index: 2;
+}
+
+/* Grass 1 (21%) */
+.prop-grass-1 {
+  left: 21%;
+  width: 12px;
+  height: 6px;
+  z-index: 4;
+}
+
+/* 3. Crates (24%) */
+.prop-crates {
+  left: 24%;
+  width: 36px;
+  height: 45px;
+  z-index: 4;
+}
+
+/* ==========================================================================
+   WASTELAND SERVICE DROID (Articulated 16-Bit Caterpillar Unit)
+   ========================================================================== */
+.footer-prop.prop-droid {
+  left: 0;
+  bottom: -5px; /* Firmly anchor caterpillar treads into wasteland sand bed */
+  width: 58px;
+  height: 60px;
+  z-index: 5;
+  pointer-events: auto;
+  cursor: pointer;
+  transform: translate3d(65px, 0, 0);
+  will-change: transform;
+}
+
+.footer-droid-inner {
+  position: relative;
+  width: 58px;
+  height: 60px;
+  transform-origin: 50% 100%;
+}
+
+.footer-droid-flipper {
+  position: relative;
+  width: 58px;
+  height: 60px;
+  transform-origin: 50% 100%;
+}
+
+.footer-droid-sprite {
+  width: 58px;
+  height: 60px;
+  background-image: url('./assets/mascot-service-droid-sheet.png');
+  background-size: 232px 60px; /* 4 frames x 58px width */
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  transform-origin: 50% 100%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.65));
+  transition: filter 0.3s ease;
+}
+
+/* 1. Moving State: 4-Frame Articulated Stepping & Tread Roll */
+.footer-droid-inner.is-moving .footer-droid-sprite {
+  animation: droidWalkSteps 0.76s steps(4) infinite;
+}
+
+@keyframes droidWalkSteps {
+  from {
+    background-position-x: 0px;
+  }
+  to {
+    background-position-x: -232px;
+  }
+}
+
+/* 2. Idle State: Rest on Neutral Frame with Grounded Chassis Breathing (No Aura) */
+.footer-droid-inner.is-idle .footer-droid-sprite {
+  background-position-x: 0px;
+  animation: droidIdleBreath 3.2s infinite ease-in-out;
+}
+
+@keyframes droidIdleBreath {
+  0%, 100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.65));
+  }
+  50% {
+    transform: translateY(1px);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.75));
+  }
+}
+
+/* 3. Interactive Happy Hop on Click */
+.footer-droid-inner.is-happy {
+  animation: droidHappyHop 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes droidHappyHop {
+  0% { transform: translateY(0) scale(1); }
+  25% { transform: translateY(-12px) rotate(-3deg) scale(1.05); }
+  50% { transform: translateY(-6px) rotate(3deg) scale(1.02); }
+  75% { transform: translateY(-2px) rotate(-1deg); }
+  100% { transform: translateY(0) rotate(0deg) scale(1); }
+}
+
+/* 4. Alert Scan Response to Cyborg Cannon Fire (Clean Ground Shadow, No Aura) */
+.footer-droid-inner.is-alert {
+  animation: droidAlertScan 0.52s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes droidAlertScan {
+  0% {
+    transform: translateY(0);
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.65));
+  }
+  35% {
+    transform: translateY(-5px);
+    filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.5));
+  }
+  70% {
+    transform: translateY(-1px);
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.65));
+  }
+  100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.65));
+  }
+}
+
+/* Responsive Scaling */
+@media (max-width: 899px) {
+  .footer-prop.prop-droid {
+    bottom: -4px;
+  }
+  .footer-prop.prop-droid,
+  .footer-droid-inner,
+  .footer-droid-flipper,
+  .footer-droid-sprite {
+    width: 48px;
+    height: 50px;
+  }
+  .footer-droid-sprite {
+    background-size: 192px 50px; /* 4 x 48px */
+  }
+  @keyframes droidWalkSteps {
+    from { background-position-x: 0px; }
+    to { background-position-x: -192px; }
+  }
+}
+
+@media (max-width: 599px) {
+  .footer-prop.prop-droid {
+    bottom: -3px;
+  }
+  .footer-prop.prop-droid,
+  .footer-droid-inner,
+  .footer-droid-flipper,
+  .footer-droid-sprite {
+    width: 40px;
+    height: 42px;
+  }
+  .footer-droid-sprite {
+    background-size: 160px 42px; /* 4 x 40px */
+  }
+  @keyframes droidWalkSteps {
+    from { background-position-x: 0px; }
+    to { background-position-x: -160px; }
+  }
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .footer-droid-inner.is-moving .footer-droid-sprite,
+  .footer-droid-inner.is-idle .footer-droid-sprite,
+  .footer-droid-inner.is-happy,
+  .footer-droid-inner.is-alert {
+    animation: none !important;
+  }
+  .footer-droid-sprite {
+    background-position-x: 0px !important;
+  }
+}
+
+/* Terminator Character & Code Projectiles Wrapper (Patrols clear gap 32% to 54%) */
+.prop-terminator {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 96px;
+  pointer-events: none;
+  z-index: 6;
+}
+
+#footer-terminator-canvas {
+  width: 100%;
+  height: 96px;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* 4. Workstation (58%) */
+.prop-workstation {
+  left: 58%;
+  width: 51px;
+  height: 62px;
+  z-index: 4;
+}
+
+/* Ground Element 3: Heavy Cyber Power Conduit (63%) */
+.prop-conduit {
+  left: 63%;
+  width: 48px;
+  height: 8px;
+  z-index: 2;
+}
+
+.conduit-pulse-node {
+  position: absolute;
+  top: 1px;
+  left: 6px;
+  width: 4px;
+  height: 2px;
+  background: #22d3ee;
+  box-shadow: 0 0 4px rgba(34, 211, 238, 0.8);
+  border-radius: 1px;
+  animation: conduit-data-travel 4s ease-in-out infinite;
+}
+
+@keyframes conduit-data-travel {
+  0%   { left: 4px; opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { left: 40px; opacity: 0; }
+}
+
+/* Grass 2 (67%) */
+.prop-grass-2 {
+  left: 67%;
+  width: 10px;
+  height: 5px;
+  z-index: 4;
+}
+
+/* 5. Server Rack (70%) */
+.prop-server {
+  left: 70%;
+  width: 37px;
+  height: 77px;
+  z-index: 4;
+}
+
+/* Primary Prop 2: Mini Segmented Radar Dish (77%) */
+.prop-antenna {
+  left: 77%;
+  width: 38px;
+  height: 56px;
+  z-index: 4;
+  cursor: pointer;
+  transform-origin: 50% 100%;
+}
+
+.antenna-dish-rotator {
+  position: relative;
+  width: 38px;
+  height: 56px;
+  transform-origin: 19px 22px;
+  animation: antenna-dish-tilt 8s ease-in-out infinite;
+  transition: transform 0.4s ease;
+}
+
+.prop-antenna:hover .antenna-dish-rotator,
+.prop-antenna.is-transmitting .antenna-dish-rotator {
+  animation: antenna-sweep-rapid 1.2s ease-in-out;
+}
+
+.antenna-beacon-led {
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 5px rgba(239, 68, 68, 0.95);
+  animation: antenna-beacon-blink 2.2s steps(2, jump-none) infinite;
+}
+
+.prop-antenna.is-transmitting .antenna-beacon-led {
+  background: #22d3ee;
+  box-shadow: 0 0 8px rgba(34, 211, 238, 1);
+  animation: antenna-beacon-burst 0.2s steps(2) infinite;
+}
+
+@keyframes antenna-dish-tilt {
+  0%, 100% { transform: rotate(0deg); }
+  35%      { transform: rotate(-2.5deg); }
+  70%      { transform: rotate(2deg); }
+}
+
+@keyframes antenna-sweep-rapid {
+  0%   { transform: rotate(0deg); }
+  30%  { transform: rotate(-6deg); }
+  70%  { transform: rotate(5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes antenna-beacon-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.15; }
+}
+
+@keyframes antenna-beacon-burst {
+  0%, 100% { opacity: 1; transform: scale(1.3); }
+  50%      { opacity: 0.3; transform: scale(0.9); }
+}
+
+/* Grass 3 (80%) */
+.prop-grass-3 {
+  left: 80%;
+  width: 14px;
+  height: 7px;
+  z-index: 4;
+}
+
+/* 6. Right Lamp (83%) */
+.prop-lamp-right {
+  left: 83%;
+  width: 27px;
+  height: 78px;
+  z-index: 5;
+}
+
+/* Ground Element 4: Tech Floor Exhaust Vent (87%) */
+.prop-vent {
+  left: 87%;
+  width: 34px;
+  height: 9px;
+  z-index: 2;
+}
+
+.vent-amber-glow {
+  position: absolute;
+  top: 3px;
+  left: 8px;
+  width: 18px;
+  height: 3px;
+  background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.65) 0%, rgba(245, 158, 11, 0) 80%);
+  animation: vent-glow-pulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes vent-glow-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+/* Grass 4 (89%) */
+.prop-grass-4 {
+  left: 89%;
+  width: 8px;
+  height: 4px;
+  z-index: 4;
+}
+
+/* 7. Right Plant (91%) */
+.prop-plant-right {
+  left: 91%;
+  width: 16px;
+  height: 38px;
+  z-index: 3;
+}
+
+/* Primary Prop 1: Heavy Outpost Workbench (95%) */
+.prop-workbench {
+  left: 95%;
+  width: 46px;
+  height: 44px;
+  z-index: 4;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.prop-workbench:hover {
+  transform: translateY(-1px);
+}
+
+.workbench-led {
+  position: absolute;
+  top: 15px;
+  left: 33px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 3px rgba(245, 158, 11, 0.9);
+  animation: workbench-led-pulse 2.6s ease-in-out infinite;
+}
+
+.prop-workbench:hover .workbench-led,
+.prop-workbench.is-testing .workbench-led {
+  background: #22d3ee;
+  box-shadow: 0 0 6px rgba(34, 211, 238, 1);
+  animation: workbench-led-fast 0.25s infinite;
+}
+
+@keyframes workbench-led-pulse {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 0.25; }
+}
+
+@keyframes workbench-led-fast {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+
+/* Grass SVG rendering */
+.grass-svg {
+  display: block;
+  overflow: visible;
+  shape-rendering: crispEdges;
+}
+
+/* Grass Sprigs & Tufts sprouting out of the sand ground */
+.prop-grass-node-0  { left: 3.5%;  width: 5px; height: 4px; z-index: 3; }
+.prop-grass-node-1  { left: 8.5%;  width: 7px; height: 4px; z-index: 3; }
+.prop-grass-node-2  { left: 12.5%; width: 5px; height: 4px; z-index: 3; }
+.prop-grass-node-3  { left: 16.5%; width: 7px; height: 4px; z-index: 3; }
+.prop-grass-node-4  { left: 22.0%; width: 5px; height: 4px; z-index: 3; }
+.prop-grass-node-5  { left: 27.5%; width: 7px; height: 4px; z-index: 3; }
+.prop-grass-node-6  { left: 32.5%; width: 5px; height: 4px; z-index: 3; }
+.prop-grass-node-7  { left: 37.5%; width: 7px; height: 4px; z-index: 3; }
+.prop-grass-node-8  { left: 42.5%; width: 5px; height: 4px; z-index: 3; }
+.prop-grass-node-9  { left: 47.5%; width: 7px; height: 4px; z-index: 3; }
+.prop-grass-node-10 { left: 52.5%; width: 5px; height: 4px; z-index: 3; }
+.prop-grass-node-11 { left: 56.5%; width: 7px; height: 4px; z-index: 3; }
+.prop-grass-node-12 { left: 62.5%; width: 5px; height: 4px; z-index: 3; }
+.prop-grass-node-13 { left: 67.0%; width: 7px; height: 4px; z-index: 3; }
+.prop-grass-node-14 { left: 73.5%; width: 5px; height: 4px; z-index: 3; }
+.prop-grass-node-15 { left: 80.0%; width: 7px; height: 4px; z-index: 3; }
+.prop-grass-node-16 { left: 85.5%; width: 5px; height: 4px; z-index: 3; }
+.prop-grass-node-17 { left: 90.0%; width: 7px; height: 4px; z-index: 3; }
+.prop-grass-node-18 { left: 93.5%; width: 5px; height: 4px; z-index: 3; }
+.prop-grass-node-19 { left: 98.5%; width: 7px; height: 4px; z-index: 3; }
+
+/* Lighting: amber glow radial-gradient (max 60px radius) behind each lamp */
+.prop-lamp-glow {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.28) 0%, rgba(245, 158, 11, 0.08) 50%, rgba(245, 158, 11, 0) 70%);
+  pointer-events: none;
+  animation: footer-lamp-flicker 3.2s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes footer-lamp-flicker {
+  0%, 100% { opacity: 0.95; transform: translateX(-50%) scale(1); }
+  35%      { opacity: 0.85; transform: translateX(-50%) scale(0.97); }
+  70%      { opacity: 1.0;  transform: translateX(-50%) scale(1.03); }
+  85%      { opacity: 0.78; transform: translateX(-50%) scale(0.95); }
+}
+
+/* Workstation CRT Monitor Screen & Green Terminal Code */
+.monitor-screen {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  width: 28px;
+  height: 22px;
+  padding: 2px;
+  box-sizing: border-box;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.monitor-code-line {
+  height: 2px;
+  margin-bottom: 2px;
+  background: #22c55e;
+  box-shadow: 0 0 2px rgba(34, 197, 94, 0.4);
+}
+
+.monitor-code-line.cl-1 { width: 14px; animation: monitor-scan 2.6s steps(4) infinite; }
+.monitor-code-line.cl-2 { width: 20px; animation: monitor-scan 3.4s steps(5) infinite; }
+.monitor-code-line.cl-3 { width: 11px; animation: monitor-scan 2.1s steps(3) infinite; }
+
+.monitor-cursor {
+  width: 3px;
+  height: 2px;
+  background: #86efac;
+  animation: monitor-cursor-blink 0.85s steps(2) infinite;
+}
+
+@keyframes monitor-scan {
+  0%, 100% { opacity: 0.9; }
+  50%      { opacity: 0.6; }
+}
+
+@keyframes monitor-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* Server Rack Animated LEDs Overlay */
+.server-leds {
+  position: absolute;
+  top: 21px;
+  left: 9px;
+  width: 18px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.76rem;
-  color: var(--text-muted);
-  max-width: var(--max-w);
+  flex-wrap: wrap;
+  gap: 3px;
+  pointer-events: none;
+}
+
+.server-led {
+  width: 2px;
+  height: 2px;
+  display: block;
+}
+
+.led-green   { background: #10b981; animation: server-blink 1.2s steps(2) infinite; }
+.led-emerald { background: #34d399; animation: server-blink 1.8s steps(2) infinite 0.3s; }
+.led-amber   { background: #f59e0b; animation: server-blink 2.2s steps(2) infinite 0.7s; }
+.led-cyan    { background: #38bdf8; animation: server-blink 1.5s steps(2) infinite 0.5s; }
+
+@keyframes server-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.15; }
+}
+
+/* Responsive Layout for Mobile / Tablet */
+@media (max-width: 768px) {
+  .prop-lamp-right,
+  .prop-plant-right,
+  .prop-grass-node-15,
+  .prop-grass-node-16,
+  .prop-grass-node-17,
+  .prop-grass-node-18,
+  .prop-grass-node-19,
+  .prop-workbench,
+  .prop-antenna,
+  .prop-vent,
+  .prop-conduit,
+  .prop-rocks-custom {
+    display: none !important;
+  }
+
+  .prop-lamp-left   { left: 3%; }
+  .prop-plant-left  { left: 11%; }
+  .prop-grass-node-4 { left: 18%; }
+  .prop-crates      { left: 22%; }
+  .prop-workstation { left: 62%; }
+  .prop-server      { left: 80%; }
+}
+
+@media (max-width: 480px) {
+  .prop-lamp-left,
+  .prop-crystals,
+  .prop-debris,
+  .prop-grass-node-0,
+  .prop-grass-node-1,
+  .prop-grass-node-13,
+  .prop-grass-node-14 {
+    display: none !important;
+  }
+  .prop-plant-left  { left: 2%; }
+  .prop-crates      { left: 12%; }
+  .prop-workstation { left: 68%; }
+  .prop-server      { left: 85%; }
 }
 
 /* ── PREMIUM UPGRADES ──────────────────────────────────────────────────── */
 
-/* 1. Swarm Canvas */
-#swarm-canvas {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 200%;
-  height: 200%;
-  z-index: -1;
-  pointer-events: none;
-}
 
 
 /* 3. Typography Mask Reveal */
@@ -928,3 +2574,1527 @@ footer {
 .mask-reveal.delay-1 {
   transition-delay: 0.15s;
 }
+
+/* ── 13. SKILLS & REVERSE MARQUEE ───────────────────────────────────────── */
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  background: var(--bg-surface);
+  padding: 0.95rem 0;
+  position: relative;
+  user-select: none;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 38s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee--reverse .marquee-track {
+  animation-direction: reverse;
+}
+
+.marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+  list-style: none;
+  flex-shrink: 0;
+}
+
+.marquee-group li {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  transition: color var(--ease);
+}
+
+.marquee-group li:hover {
+  color: var(--text);
+}
+
+.marquee-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+  opacity: 0.85;
+  transition: opacity var(--ease), transform var(--ease);
+}
+
+.marquee-group li:hover .marquee-icon {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.marquee-group li::after {
+  content: "·";
+  color: var(--border);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-left: 2rem;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none !important;
+  }
+}
+
+/* ── 14. HACKATHONS TIMELINE ───────────────────────────────────────────── */
+.timeline-list {
+  max-width: var(--max-w);
+  list-style: none;
+}
+
+.timeline-list li {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 3rem;
+  padding: 2.75rem 0;
+  border-top: 1px solid var(--border-light);
+}
+
+.timeline-list li:last-child {
+  border-bottom: 1px solid var(--border-light);
+}
+
+.tl-date {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  padding-top: 0.2rem;
+}
+
+.timeline-list h3 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+.timeline-list p {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+.timeline-list p strong {
+  color: var(--text);
+}
+
+.timeline-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.timeline-links a {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.15rem;
+  transition: color var(--ease), border-color var(--ease);
+}
+
+.timeline-links a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ── 16. CERTIFICATES ──────────────────────────────────────────────────── */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+  max-width: var(--max-w);
+}
+
+.cert-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 2.25rem 1.85rem;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: border-color var(--ease), transform var(--ease);
+}
+
+.cert-card:hover {
+  border-color: var(--text-muted);
+  transform: translateY(-3px);
+}
+
+.cert-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.cert-card-header .cert-issuer {
+  margin-bottom: 0;
+}
+
+.cert-logos-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cert-logo {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.cert-issuer {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.85rem;
+}
+
+.cert-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--text);
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.cert-link {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color var(--ease);
+}
+
+.cert-card:hover .cert-link {
+  color: var(--text);
+}
+
+/* Verified Badges & Profiles Bar */
+.cert-verify-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 2rem;
+  padding: 1.15rem 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.cert-verify-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cert-verify-links {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.cert-verify-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  padding: 0.5rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all var(--ease);
+}
+
+.cert-verify-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.cert-verify-btn .verify-icon {
+  flex-shrink: 0;
+}
+
+.cert-verify-btn .arrow {
+  font-size: 0.85rem;
+  transition: transform var(--ease);
+}
+
+.cert-verify-btn:hover .arrow {
+  transform: translate(2px, -2px);
+}
+
+.cert-verify-google-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ── Pixelated Cosmic Starfield Background Canvas ───────────────────────── */
+#pixel-stars-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* ── Retro Chunky Pixel-Art Asteroid Field ───────────────────────────── */
+.asteroid-field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1; /* Sits above starfield canvas (z-index 0), behind all content (z-index 2+) */
+}
+
+.pixel-asteroid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.pixel-asteroid-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Tier 1: Distant micro-asteroids (small, faint, subtle contrast, deep background) */
+.pixel-asteroid--tier-1 {
+  opacity: 0.35;
+  filter: brightness(0.55) contrast(0.78);
+}
+
+/* Tier 2: Distant mid-field asteroids (medium size, balanced contrast) */
+.pixel-asteroid--tier-2 {
+  opacity: 0.58;
+  filter: brightness(0.70) contrast(0.85);
+}
+
+/* Tier 3: Distant cluster asteroids (subtle celestial presence, clean pixels, no harsh glare) */
+.pixel-asteroid--tier-3 {
+  opacity: 0.78;
+  filter: brightness(0.82) contrast(0.92);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-asteroid {
+    transform: none !important;
+  }
+}
+
+/* ── Distant Ringed Pixel Planet in Experience Section ─────────────────── */
+.projects-pixel-planet {
+  position: absolute;
+  top: 16%;
+  right: 3%;
+  width: 76px;
+  height: 62px;
+  z-index: 1; /* Sits behind experience cards in cosmic void */
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.82;
+  filter: brightness(0.88) contrast(0.96);
+  will-change: transform;
+}
+
+.projects-planet-drift-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.projects-planet-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 1024px) {
+  .projects-pixel-planet {
+    width: 64px;
+    height: 52px;
+    top: 15%;
+    right: 3%;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-pixel-planet {
+    width: 50px;
+    height: 41px;
+    top: 14%;
+    right: 2%;
+    opacity: 0.76;
+    filter: brightness(0.84) contrast(0.94);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-pixel-planet,
+  .projects-planet-drift-wrap {
+    transform: none !important;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   AI PIXEL MASCOTS — Asymmetric Placement, Movement & Interactivity
+   1. ChatGPT: floating companion beside About bio with OpenAI logo bubble
+   2. Claude: perched on About/Experience divider with Anthropic logo bubble
+   3. Gemini: floating celestial companion above Experience/Projects divider with Gemini bubble
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.about-bio {
+  position: relative;
+}
+
+.pixel-mascot {
+  position: absolute;
+  user-select: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.pixel-mascot:focus-visible {
+  outline: 2px dashed var(--accent);
+  outline-offset: 4px;
+}
+
+.mascot-img,
+.mascot-bubble-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+
+/* Floating Speech Bubbles with Logos (Revealed strictly on double-click) */
+.mascot-bubble {
+  position: absolute;
+  pointer-events: none;
+  z-index: 25;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.28s cubic-bezier(0.34, 1.4, 0.64, 1),
+              visibility 0.28s;
+}
+
+.mascot-bubble.bubble-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ── UNIVERSAL RETRO PIXEL-ART RENDERING ──────────────────────────────── */
+.pixel-art,
+[class*="mascot-"],
+[class*="pixel-"],
+.tiny-space-probe-img,
+.probe-antenna-beacon,
+.space-nebula-img,
+.orbital-station-img,
+.beacon-sprite-img {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+/* ── 1. STAR WARS STARFIGHTER DEEP-SPACE ASSET (NEAR HACKATHONS SPRINT TITLE) ─ */
+.pixel-starfighter-flight-wrap {
+  position: absolute;
+  top: 56px;
+  right: clamp(2.5rem, 16vw, 17rem);
+  width: 160px;
+  height: 92px;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.94; /* Distant atmospheric integration */
+  animation: starfighterPoweredFlight 22s cubic-bezier(0.42, 0.05, 0.58, 0.95) infinite;
+}
+
+.pixel-starfighter-bank-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  filter: none !important; /* STRICT: Broad cyan glow aura completely removed */
+}
+
+.pixel-starfighter-img {
+  width: 160px;
+  height: 92px;
+  display: block;
+  /* Authentic crisp 16-bit retro pixel-art rendering */
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Directional Thruster Exhaust Plumes (Trailing behind rear engine bells along -145° vector) */
+.starfighter-thruster {
+  position: absolute;
+  width: 12px;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0) 0%, rgba(56, 189, 248, 0.8) 40%, #ffffff 90%, #ffffff 100%);
+  border-radius: 2px 4px 4px 2px;
+  transform-origin: 100% 50%;
+  transform: rotate(35deg);
+  animation: starfighterThrusterFlicker 0.22s ease-in-out infinite alternate;
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(56, 189, 248, 0.7);
+}
+
+.starfighter-thruster.plume-upper {
+  top: 6%;
+  left: 44.2%;
+  margin-left: -12px;
+  margin-top: -2px;
+}
+
+.starfighter-thruster.plume-lower {
+  top: 39%;
+  left: 8%;
+  margin-left: -12px;
+  margin-top: -2px;
+}
+
+@keyframes starfighterThrusterFlicker {
+  0% {
+    transform: rotate(35deg) scaleX(0.85) scaleY(0.85);
+    opacity: 0.78;
+  }
+  42% {
+    transform: rotate(35deg) scaleX(1.15) scaleY(1.0);
+    opacity: 0.95;
+  }
+  50% {
+    /* Short directional thrust burst */
+    transform: rotate(35deg) scaleX(1.5) scaleY(1.2);
+    opacity: 1;
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.9));
+  }
+  60% {
+    transform: rotate(35deg) scaleX(0.95) scaleY(0.9);
+    opacity: 0.85;
+  }
+  100% {
+    transform: rotate(35deg) scaleX(0.9) scaleY(0.85);
+    opacity: 0.8;
+  }
+}
+
+@keyframes starfighterPoweredFlight {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  24% {
+    /* Powered acceleration forward & slightly down */
+    transform: translate3d(24px, 11px, 0) rotate(2deg);
+  }
+  48% {
+    /* Gentle port banking / level cruise */
+    transform: translate3d(36px, -3px, 0) rotate(-3.5deg);
+  }
+  72% {
+    /* Gentle climbing glide / deceleration */
+    transform: translate3d(16px, -14px, 0) rotate(-4deg);
+  }
+  88% {
+    /* Trajectory turn back */
+    transform: translate3d(-8px, -6px, 0) rotate(1.5deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .pixel-starfighter-flight-wrap {
+    top: 44px;
+    right: 6%;
+    width: 120px;
+    height: 69px;
+  }
+  .pixel-starfighter-img {
+    width: 120px;
+    height: 69px;
+  }
+  .starfighter-thruster {
+    width: 9px;
+    height: 3px;
+  }
+  .starfighter-thruster.plume-upper {
+    margin-left: -9px;
+    margin-top: -1.5px;
+  }
+  .starfighter-thruster.plume-lower {
+    margin-left: -9px;
+    margin-top: -1.5px;
+  }
+}
+
+@media (max-width: 560px) {
+  .pixel-starfighter-flight-wrap {
+    top: 24px;
+    right: 4%;
+    width: 90px;
+    height: 52px;
+    opacity: 0.9;
+  }
+  .pixel-starfighter-img {
+    width: 90px;
+    height: 52px;
+  }
+  .starfighter-thruster {
+    width: 7px;
+    height: 2.5px;
+  }
+  .starfighter-thruster.plume-upper {
+    margin-left: -7px;
+    margin-top: -1px;
+  }
+  .starfighter-thruster.plume-lower {
+    margin-left: -7px;
+    margin-top: -1px;
+  }
+}
+
+/* ── 2. LOST ASTRONAUT HELMET DEEP-SPACE RELIC IN PROJECTS ─────────────── */
+.pixel-space-helmet-drift-wrap {
+  position: absolute;
+  top: 36px;
+  right: 6%;
+  width: 42px;
+  height: 45px;
+  pointer-events: none;
+  z-index: 1; /* Sits behind project cards */
+  animation: helmetDrift 20s ease-in-out infinite alternate;
+}
+
+.pixel-space-helmet-tumble-wrap {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0.85) contrast(0.95);
+  animation: helmetTumble 16s ease-in-out infinite alternate;
+}
+
+.pixel-space-helmet-img {
+  width: 42px;
+  height: 45px;
+  display: block;
+}
+
+@keyframes helmetDrift {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(-14px, 18px, 0); }
+  100% { transform: translate3d(8px, 32px, 0); }
+}
+
+@keyframes helmetTumble {
+  0%   { transform: rotate(-4deg); }
+  50%  { transform: rotate(3deg); }
+  100% { transform: rotate(-3deg); }
+}
+
+@media (max-width: 1024px) {
+  .pixel-space-helmet-drift-wrap {
+    top: 30px;
+    right: 5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .pixel-space-helmet-drift-wrap {
+    top: 22px;
+    right: 4%;
+    width: 32px;
+    height: 34px;
+  }
+  .pixel-space-helmet-img {
+    width: 32px;
+    height: 34px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pixel-space-helmet-drift-wrap {
+    top: 18px;
+    right: 18px;
+    width: 28px;
+    height: 30px;
+  }
+  .pixel-space-helmet-img {
+    width: 28px;
+    height: 30px;
+  }
+  .pixel-space-helmet-tumble-wrap {
+    filter: brightness(0.80) contrast(0.90) opacity(0.70);
+  }
+}
+
+/* ── 3. TINY SPACE PROBE DEEP-SPACE ASSET ───────────────────────────────── */
+.tiny-space-probe-drift-wrap {
+  position: absolute;
+  top: 26px;
+  left: clamp(24px, 4vw, 56px);
+  width: 46px;
+  height: 34px;
+  pointer-events: none;
+  z-index: 1; /* Sits behind projects cards */
+  animation: probeInertiaDrift 26s ease-in-out infinite alternate;
+}
+
+.tiny-space-probe-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0.85) contrast(0.92);
+  animation: probeWobble 14s ease-in-out infinite alternate;
+}
+
+.tiny-space-probe-img {
+  width: 46px;
+  height: 34px;
+  display: block;
+}
+
+.probe-antenna-beacon {
+  position: absolute;
+  top: 1px;
+  right: 7px;
+  width: 3px;
+  height: 3px;
+  background-color: #38bdf8;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #38bdf8;
+  animation: probeBeaconPulse 4.2s ease-in-out infinite;
+}
+
+@keyframes probeBeaconPulse {
+  0%, 86%, 100% { opacity: 0; }
+  90%, 94%      { opacity: 1; }
+}
+
+@keyframes probeInertiaDrift {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(16px, -12px, 0); }
+  100% { transform: translate3d(30px, 8px, 0); }
+}
+
+@keyframes probeWobble {
+  0%   { transform: rotate(-2deg); }
+  50%  { transform: rotate(2.5deg); }
+  100% { transform: rotate(-1.5deg); }
+}
+
+@media (max-width: 768px) {
+  .tiny-space-probe-drift-wrap {
+    top: 20px;
+    left: 4%;
+    width: 30px;
+    height: 22px;
+  }
+  .tiny-space-probe-img {
+    width: 30px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tiny-space-probe-drift-wrap {
+    top: 14px;
+    left: 16px;
+    width: 26px;
+    height: 19px;
+  }
+  .tiny-space-probe-img {
+    width: 26px;
+    height: 19px;
+  }
+  .tiny-space-probe-inner {
+    filter: brightness(0.80) contrast(0.90) opacity(0.70);
+  }
+}
+
+/* ── 4. CLAUDE MASCOT WALKING ON ABOUT/EXP DIVIDER ─────────────────────── */
+.mascot-claude-patrol-wrap {
+  position: absolute;
+  top: -88px; /* Aligns sprite bottom footpads on 1px divider rail */
+  left: 10%;
+  width: 70px;
+  height: 90px;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+  animation: claudePatrolTrack 52s linear infinite; /* Slower, natural patrol pace */
+}
+
+.mascot-claude-flip-wrap {
+  width: 70px;
+  height: 90px;
+  transform-origin: 50% 100%;
+  animation: claudePatrolFlip 52s step-end infinite;
+}
+
+.mascot-claude-sprite {
+  width: 70px; /* 0.5x scale */
+  height: 90px;
+  background-image: url('./assets/mascot-claude-walk-sheet.png');
+  background-size: 420px 90px;
+  background-repeat: no-repeat;
+  animation: claudeWalk 1.5s steps(6) infinite; /* Slower deliberate step cadence */
+}
+
+@keyframes claudeWalk {
+  to { background-position-x: -420px; }
+}
+
+@keyframes claudePatrolTrack {
+  0%    { left: 10%; }
+  49.5% { left: 85%; }
+  50%   { left: 85%; }
+  99.5% { left: 10%; }
+  100%  { left: 10%; }
+}
+
+@keyframes claudePatrolFlip {
+  0%    { transform: scaleX(1); }
+  49.5% { transform: scaleX(-1); }
+  99.5% { transform: scaleX(1); }
+}
+
+@media (max-width: 768px) {
+  .mascot-claude-patrol-wrap {
+    top: -72px;
+    width: 56px;
+    height: 72px;
+    animation: claudePatrolTrack 52s linear infinite;
+  }
+  .mascot-claude-flip-wrap {
+    width: 56px;
+    height: 72px;
+    animation: claudePatrolFlip 52s step-end infinite;
+  }
+  .mascot-claude-sprite {
+    width: 56px;
+    height: 72px;
+    background-size: 336px 72px;
+    animation: claudeWalk 1.5s steps(6) infinite;
+  }
+  @keyframes claudeWalk {
+    to { background-position-x: -336px; }
+  }
+  @keyframes claudePatrolTrack {
+    0%    { left: 5%; }
+    49.5% { left: 80%; }
+    50%   { left: 80%; }
+    99.5% { left: 5%; }
+    100%  { left: 5%; }
+  }
+}
+
+/* ── 5. CHATGPT MASCOT HOVERING IN AI SKILLS GROUP ─────────────────────── */
+.skills-group-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mascot-chatgpt-wrap {
+  position: relative;
+  width: 60px;
+  height: 72px;
+  margin-top: -18px;
+  margin-bottom: -10px;
+  margin-right: 4px;
+  pointer-events: none;
+  z-index: 5;
+  image-rendering: pixelated;
+}
+
+/* ChatGPT beside Projects See More button: Autonomous Roaming Drone Flight */
+.mascot-chatgpt-wrap.mascot-chatgpt-projects,
+.mascot-chatgpt-wrap.mascot-chatgpt-heading {
+  position: relative;
+  top: auto;
+  right: auto;
+  margin: 0;
+  flex-shrink: 0;
+  animation: chatgptAutonomousFlight 16s cubic-bezier(0.42, 0.05, 0.58, 0.95) infinite;
+}
+
+.mascot-chatgpt-wrap.mascot-chatgpt-projects:hover,
+.mascot-chatgpt-wrap.mascot-chatgpt-projects:focus-visible,
+.mascot-chatgpt-wrap:hover,
+.mascot-chatgpt-wrap:focus-visible {
+  animation-play-state: paused;
+}
+
+.mascot-chatgpt-float {
+  width: 60px;
+  height: 72px;
+  animation: chatgptAutonomousBank 16s ease-in-out infinite;
+}
+
+.mascot-chatgpt-wrap:hover .mascot-chatgpt-float,
+.mascot-chatgpt-wrap:focus-visible .mascot-chatgpt-float {
+  animation-play-state: paused;
+}
+
+.mascot-chatgpt-sprite {
+  width: 60px; /* 0.4x scale */
+  height: 72px;
+  background-image: url('./assets/mascot-chatgpt-sheet.png');
+  background-size: 360px 72px;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  pointer-events: auto;
+  cursor: pointer;
+  animation: chatgptHarmonicLoop 1.12s steps(1) infinite;
+}
+
+/* 8-step harmonic thruster & core energy cycle (140ms/step) */
+@keyframes chatgptHarmonicLoop {
+  0%, 12.5%     { background-position: 0 0; }        /* F1: Center idle hover */
+  12.51%, 25.0% { background-position: -240px 0; }   /* F5: Core spark pulse */
+  25.01%, 37.5% { background-position: -120px 0; }   /* F3: Bank Right 30deg */
+  37.51%, 50.0% { background-position: -300px 0; }   /* F6: Core power glow */
+  50.01%, 62.5% { background-position: -60px 0; }    /* F2: Thruster flare tilt */
+  62.51%, 75.0% { background-position: -180px 0; }   /* F4: Bank Left 30deg */
+  75.01%, 87.5% { background-position: -240px 0; }   /* F5: Core spark pulse */
+  87.51%, 100%  { background-position: 0 0; }        /* F1: Center idle hover */
+}
+
+/* Autonomous flight trajectory across Projects boundary */
+@keyframes chatgptAutonomousFlight {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  16% {
+    transform: translate3d(-70px, -24px, 0);
+  }
+  34% {
+    transform: translate3d(-240px, -30px, 0);
+  }
+  46% {
+    transform: translate3d(-255px, -14px, 0);
+  }
+  62% {
+    transform: translate3d(-130px, -34px, 0);
+  }
+  82% {
+    transform: translate3d(25px, -18px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Directional banking in flight */
+@keyframes chatgptAutonomousBank {
+  0%, 8%    { transform: rotate(0deg) scale(1); }
+  16%, 32%  { transform: rotate(-8deg) scale(1.02); } /* Banks left while flying left */
+  42%, 52%  { transform: rotate(1deg) scale(1); }     /* Level scan on left */
+  60%, 80%  { transform: rotate(8deg) scale(1.02); }  /* Banks right while returning right */
+  88%, 100% { transform: rotate(0deg) scale(1); }
+}
+
+@media (max-width: 600px) {
+  .mascot-chatgpt-wrap {
+    width: 50px;
+    height: 60px;
+  }
+  .mascot-chatgpt-float {
+    width: 50px;
+    height: 60px;
+  }
+  .mascot-chatgpt-sprite {
+    width: 50px;
+    height: 60px;
+    background-size: 300px 60px;
+    animation: chatgptHarmonicLoop 1.12s steps(1) infinite;
+  }
+  @keyframes chatgptHarmonicLoop {
+    0%, 12.5%     { background-position: 0 0; }
+    12.51%, 25.0% { background-position: -200px 0; }
+    25.01%, 37.5% { background-position: -100px 0; }
+    37.51%, 50.0% { background-position: -250px 0; }
+    50.01%, 62.5% { background-position: -50px 0; }
+    62.51%, 75.0% { background-position: -150px 0; }
+    75.01%, 87.5% { background-position: -200px 0; }
+    87.51%, 100%  { background-position: 0 0; }
+  }
+}
+
+/* ── 6. GEMINI FLOATING COSMONAUT NEAR GOOGLE SKILLS BADGE BUTTON ──────── */
+.mascot-gemini-wrap {
+  position: relative;
+  width: 54px;
+  height: 51px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Positioned above the Google Skills Profile badge button: Autonomous Zero-G Orbit */
+.mascot-gemini-wrap.mascot-gemini-badge {
+  position: absolute;
+  top: -46px;
+  right: -10px;
+  animation: geminiAutonomousOrbit 28s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+}
+
+.mascot-gemini-wrap.mascot-gemini-badge:hover,
+.mascot-gemini-wrap.mascot-gemini-badge:focus-visible,
+.mascot-gemini-wrap:hover,
+.mascot-gemini-wrap:focus-visible {
+  animation-play-state: paused;
+}
+
+.mascot-gemini-float {
+  width: 54px;
+  height: 51px;
+  animation: geminiCosmicTilt 28s ease-in-out infinite;
+}
+
+.mascot-gemini-wrap:hover .mascot-gemini-float,
+.mascot-gemini-wrap:focus-visible .mascot-gemini-float {
+  animation-play-state: paused;
+}
+
+.mascot-gemini-sprite {
+  width: 54px;
+  height: 51px;
+  background-image: url('./assets/mascot-gemini-sheet.png');
+  background-size: 270px 51px;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  pointer-events: auto;
+  cursor: pointer;
+  animation: geminiHarmonicArc 5.4s steps(1) infinite;
+}
+
+/* Slow, graceful 5.4s harmonic gesture arc: Serene 2.4s float -> gentle deliberate star cheer -> calm return */
+@keyframes geminiHarmonicArc {
+  0%, 44%        { background-position: 0 0; }        /* F1: Rest at sides (2.38s serene drift) */
+  44.01%, 58%    { background-position: -108px 0; }   /* F3: Reach forward with star (0.75s) */
+  58.01%, 76%    { background-position: -162px 0; }   /* F4: Twin star victory cheer (0.97s) */
+  76.01%, 88%    { background-position: -216px 0; }   /* F5: Star at shoulder level (0.65s) */
+  88.01%, 100%   { background-position: -54px 0; }    /* F2: Graceful lower arm to rest (0.65s) */
+}
+
+/* Autonomous zero-g space orbit around Google Skills Profile badge (slow 28s drift) */
+@keyframes geminiAutonomousOrbit {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(-35px, -20px, 0);
+  }
+  50% {
+    transform: translate3d(-85px, -12px, 0);
+  }
+  72% {
+    transform: translate3d(-100px, 6px, 0);
+  }
+  88% {
+    transform: translate3d(-40px, 8px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Zero-g cosmic tilt (gentle slow micro-adjustments) */
+@keyframes geminiCosmicTilt {
+  0%, 12%   { transform: rotate(0deg); }
+  28%, 45%  { transform: rotate(-5deg); }
+  55%, 72%  { transform: rotate(4deg); }
+  82%, 92%  { transform: rotate(-3deg); }
+  100%      { transform: rotate(0deg); }
+}
+
+@media (max-width: 600px) {
+  .mascot-gemini-wrap.mascot-gemini-badge {
+    top: -40px;
+    right: -6px;
+    transform: scale(0.9);
+    transform-origin: bottom right;
+  }
+}
+
+@media (max-width: 768px) {
+  .mascot-gemini-wrap {
+    width: 58px;
+    height: 55px;
+  }
+  .mascot-gemini-float {
+    width: 58px;
+    height: 55px;
+  }
+  .mascot-gemini-sprite {
+    width: 58px;
+    height: 55px;
+    background-size: 290px 55px;
+    animation: geminiHarmonicArc 5.4s steps(1) infinite;
+  }
+  @keyframes geminiHarmonicArc {
+    0%, 44%        { background-position: 0 0; }
+    44.01%, 58%    { background-position: -116px 0; }
+    58.01%, 76%    { background-position: -174px 0; }
+    76.01%, 88%    { background-position: -232px 0; }
+    88.01%, 100%   { background-position: -58px 0; }
+  }
+}
+
+/* ── MASCOT SPEECH BUBBLES POSITIONING ────────────────────────────────── */
+.chatgpt-bubble {
+  position: absolute;
+  top: -46px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px) scale(0.65);
+  width: 44px;
+  height: 48px;
+  pointer-events: none;
+  z-index: 25;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.chatgpt-bubble.bubble-active {
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.claude-bubble {
+  position: absolute;
+  top: -48px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px) scale(0.65);
+  width: 44px;
+  height: 48px;
+  pointer-events: none;
+  z-index: 25;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.claude-bubble.bubble-active {
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.gemini-bubble {
+  position: absolute;
+  top: -48px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px) scale(0.65);
+  width: 44px;
+  height: 48px;
+  pointer-events: none;
+  z-index: 25;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.gemini-bubble.bubble-active {
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* ── PREFERS REDUCED MOTION OVERRIDES ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .pixel-starfighter-drift-wrap,
+  .pixel-starfighter-bank-wrap,
+  .pixel-space-helmet-drift-wrap,
+  .pixel-space-helmet-tumble-wrap,
+  .tiny-space-probe-drift-wrap,
+  .tiny-space-probe-inner,
+  .probe-antenna-beacon,
+  .mascot-claude-patrol-wrap,
+  .mascot-claude-flip-wrap,
+  .mascot-chatgpt-wrap,
+  .mascot-chatgpt-float,
+  .mascot-gemini-wrap,
+  .mascot-gemini-float {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .mascot-claude-patrol-wrap {
+    left: 12% !important;
+  }
+
+  .mascot-claude-sprite {
+    animation: none !important;
+    background-image: url('./assets/mascot-claude.png') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center bottom !important;
+  }
+
+  .mascot-chatgpt-sprite {
+    animation: none !important;
+    background-image: url('./assets/mascot-chatgpt.png') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center bottom !important;
+  }
+
+  .mascot-gemini-sprite {
+    animation: none !important;
+    background-image: url('./assets/mascot-gemini.png') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center bottom !important;
+  }
+}
+
+/* ── REDUCED MOTION SUPPORT ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .mascot-chatgpt.chatgpt-forward,
+  .chatgpt-body,
+  .chatgpt-bubble,
+  .chatgpt-thruster-glow,
+  .claude-body,
+  .claude-bubble,
+  .gemini-orbit-wrap,
+  .gemini-bubble,
+  .gemini-part-body,
+  .gemini-part-head,
+  .gemini-part-mouth,
+  .gemini-part-arml,
+  .gemini-part-handl,
+  .gemini-part-armr,
+  .gemini-part-handr,
+  .constellation-spark,
+  .prop-debris,
+  .antenna-dish-rotator,
+  .antenna-beacon-led,
+  .workbench-led,
+  .vent-amber-glow,
+  .conduit-pulse-node,
+  .prop-crystals::after {
+    animation: none !important;
+  }
+  .mascot-claude {
+    transition: none !important;
+  }
+  .mascot-chatgpt:hover .chatgpt-body,
+  .mascot-claude:hover .claude-body,
+  .mascot-gemini:hover .gemini-body {
+    transform: none !important;
+  }
+}
+
+/* ── Performance: Pause animation when scrolled offscreen ───────────── */
+.pixel-mascot.mascot-offscreen .chatgpt-body,
+.pixel-mascot.mascot-offscreen .chatgpt-bubble,
+.pixel-mascot.mascot-offscreen .chatgpt-thruster-glow,
+.pixel-mascot.mascot-offscreen .claude-body,
+.pixel-mascot.mascot-offscreen .claude-bubble,
+.pixel-mascot.mascot-offscreen .gemini-orbit-wrap,
+.pixel-mascot.mascot-offscreen .gemini-bubble {
+  animation-play-state: paused !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   DEEP-SPACE INTEGRATION: DISTANT NEBULA CLOUD & ORBITAL RESEARCH STATION
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Distant Deep-Space Nebula Cloud (Atmospheric Layer in About) ───── */
+.space-nebula-wrap {
+  position: absolute;
+  top: clamp(25px, 4.5vw, 65px);
+  right: clamp(65px, 8vw, 130px);
+  width: clamp(420px, 36vw, 520px);
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1; /* Sits in distant cosmic background behind all section content (z-index 2) */
+  opacity: 0.48;
+  filter: brightness(0.92) contrast(1.05);
+  will-change: transform;
+}
+
+.space-nebula-drift {
+  width: 100%;
+  height: auto;
+  position: relative;
+  animation: nebulaTidalDrift 76s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.space-nebula-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Fluid cosmic tidal drift: slow dual-sine displacement & micro-skew in vacuum */
+@keyframes nebulaTidalDrift {
+  0% {
+    transform: translate3d(0, 0, 0) skew(0deg, 0deg);
+  }
+  25% {
+    transform: translate3d(-7px, 5px, 0) skew(-0.35deg, 0.25deg);
+  }
+  50% {
+    transform: translate3d(4px, -4px, 0) skew(0.3deg, -0.2deg);
+  }
+  75% {
+    transform: translate3d(-4px, -6px, 0) skew(-0.2deg, 0.35deg);
+  }
+  100% {
+    transform: translate3d(6px, 4px, 0) skew(0.35deg, -0.15deg);
+  }
+}
+
+/* Ionization breathing: cyclic radiation pressure & ultraviolet flux from core */
+@keyframes nebulaIonPulse {
+  0%, 100% {
+    opacity: 0.92;
+    filter: brightness(0.92) saturate(1.02);
+  }
+  35% {
+    opacity: 0.98;
+    filter: brightness(1.02) saturate(1.14);
+  }
+  70% {
+    opacity: 0.94;
+    filter: brightness(0.95) saturate(1.06);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .space-nebula-wrap {
+    animation: nebulaScrollParallax linear both;
+    animation-timeline: view();
+    animation-range: entry 0% exit 100%;
+  }
+}
+
+/* Micro-parallax for distant cosmic formations (minimal relative movement) */
+@keyframes nebulaScrollParallax {
+  from { transform: translate3d(0, 10px, 0); }
+  to   { transform: translate3d(0, -12px, 0); }
+}
+
+/* ── 2. Distant Abandoned Orbital Research Station in Projects Section ── */
+.projects-orbital-station {
+  position: absolute;
+  top: 340px;
+  right: clamp(16px, 3.5vw, 68px);
+  width: clamp(145px, 14vw, 215px);
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1; /* Sits in cosmic background behind project cards (z-index 2) */
+  opacity: 0.65;
+  filter: brightness(0.76) contrast(0.92);
+  will-change: transform;
+}
+
+.orbital-station-drift-wrap {
+  width: 100%;
+  height: auto;
+  position: relative;
+  animation: stationInertiaDrift 36s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.orbital-station-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+}
+
+@keyframes stationInertiaDrift {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%  { transform: translate3d(-6px, 8px, 0) rotate(0.6deg); }
+  100% { transform: translate3d(4px, -5px, 0) rotate(-0.5deg); }
+}
+
+@supports (animation-timeline: scroll(root)) {
+  .projects-orbital-station {
+    animation: stationScrollParallax linear both;
+    animation-timeline: view();
+    animation-range: entry 0% exit 100%;
+  }
+}
+
+@keyframes stationScrollParallax {
+  from { transform: translate3d(0, 45px, 0); }
+  to   { transform: translate3d(0, -45px, 0); }
+}
+
+/* ── Responsive Refinements ─────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .space-nebula-wrap {
+    width: clamp(360px, 44vw, 440px);
+    top: clamp(20px, 3.5vw, 45px);
+    right: clamp(40px, 6vw, 75px);
+    opacity: 0.46;
+  }
+  .projects-orbital-station {
+    width: clamp(130px, 15vw, 175px);
+    top: 360px;
+    right: 3%;
+    opacity: 0.60;
+  }
+}
+
+@media (max-width: 768px) {
+  .space-nebula-wrap {
+    width: clamp(320px, 50vw, 400px);
+    top: 20px;
+    right: clamp(20px, 4vw, 45px);
+    opacity: 0.44;
+  }
+  .projects-orbital-station {
+    display: block;
+    top: 290px;
+    right: 2%;
+    width: 115px;
+    opacity: 0.60;
+    filter: brightness(0.95) contrast(1.02);
+  }
+}
+
+@media (max-width: 480px) {
+  .space-nebula-wrap {
+    width: clamp(270px, 76vw, 320px);
+    top: 15px;
+    right: 5px;
+    opacity: 0.45;
+  }
+  /* Position orbital station behind frosted project card on mobile */
+  .projects-orbital-station {
+    display: block;
+    top: 220px;
+    right: 4px;
+    width: 125px;
+    opacity: 0.75;
+    filter: brightness(1.12) contrast(1.08);
+  }
+}
+
+@media (max-width: 768px) {
+  @keyframes stationScrollParallax {
+    from { transform: translate3d(0, 18px, 0); }
+    to   { transform: translate3d(0, -18px, 0); }
+  }
+}
+
+@media (max-width: 480px) {
+  @keyframes stationScrollParallax {
+    from { transform: translate3d(0, 10px, 0); }
+    to   { transform: translate3d(0, -10px, 0); }
+  }
+}
+
+/* ── Reduced Motion Accessibility ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .space-nebula-wrap,
+  .space-nebula-drift,
+  .space-nebula-canvas,
+  .space-nebula-img,
+  .projects-orbital-station,
+  .orbital-station-drift-wrap {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+

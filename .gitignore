@@ -1,0 +1,13 @@
+# Environment variables and secrets
+.env
+.env.*
+*.pem
+*.key
+*.cert
+*.crt
+
+# Dependencies & OS
+node_modules/
+scratch/
+.DS_Store
+Thumbs.db
